@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<meta name="theme-color" content="#ffffff">
+<link href='https://fonts.googleapis.com/css?family=Quicksand:400,700,300' rel='stylesheet' type='text/css'>
+<!--<link rel="stylesheet" type="text/css" href="//secure.eventbeat.co.uk/dist/feedv1/eventbeat.css" media="screen" />-->
+<script src='//maps.googleapis.com/maps/api/js?key=AIzaSyAvK08eVRssjLvZ5Yp20pxfYifrTdl2b48&v=3.exp&libraries=places'></script>
+<link href="https://d3jh33bzyw1wep.cloudfront.net/db_assets/production/_universal/application.css?t=1524230219" media="screen" rel="stylesheet" />
+<link href="https://d3jh33bzyw1wep.cloudfront.net/db_assets/production/conexus/application.css?t=1568217472" media="screen" rel="stylesheet" />
+<script src="https://d3jh33bzyw1wep.cloudfront.net/db_assets/production/_universal/application.js?t=1524230219"></script>
+<script src="https://d3jh33bzyw1wep.cloudfront.net/db_assets/production/conexus/application.js?t=1568217472"></script>
+<title>SJ practice</title>
+<script src='/chosen/chosen.jquery.min.js'></script>
+<link data-turbolinks-track='true' href='/chosen/chosen.css' media='all' rel='stylesheet'>
+<script src="https://d3jh33bzyw1wep.cloudfront.net/assets/rumble-script-46b3a471266be540f774ce4fc939b3c7.js"></script>
+<style>
+  .cke_widget_wrapper .cke_widget_drag_handler_container { display: none; }
+</style>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  document.addEventListener('DOMContentLoaded', function(){
+    if ($('.volcanic-form').length > 0 || $('#logo-upload-form').length > 0) {
+      $.getScript( '/javascripts/jquery.iframe-transport.js' );
+      $.getScript( '/javascripts/jquery.remotipart.js' );
+    }
+    $('.volcanic-form').each( function() {
+      var form_id = $(this).data("form-id");
+      $(this).replaceWith("<div class='form_" + form_id + "'>Loading form...</div>");
+
+      $.ajax({
+        url: "/liquid/forms/" + form_id + "?locale=en",
+        success:function(data) {
+          $(".form_" + form_id ).html(data);
+        },
+        dataType: 'html'
+      });
+    });
+
+    $('.secure-volcanic-download').each( function() {
+      var download_id = $(this).data("download-id");
+      var $element = $(this);
+      $.ajax({
+        url: "/liquid/uploads/" + download_id,
+        success:function(data) {
+          $element.find("a").attr("href",data.url);
+          $element.find("a").attr("target","_blank");
+        },
+        dataType: "json"
+      });
+    });
+  });
+</script>
+<!-- META DATA -->
+<meta content='authenticity_token' name='csrf-param'>
+<meta content='+m6uljserWVFT6/TtRKsKJvUS+kSnL3xTI8JUTxZqgw=' name='csrf-token'>
+<meta content='Conexus Medstaff are dedicated to developing career pathways for international nurses and healthcare professionals in the USA' name='Description'>
+<meta property="og:title" content="Leading International Nurse Recruitment for the US" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Conexus Medstaff are dedicated to developing career pathways for international nurses and healthcare professionals in the USA" />
+
+<meta property="og:url" content="https://www.conexusmedstaff.com/" />
+<meta content='summary_large_image' name='twitter:card'>
+<meta content='Leading International Nurse Recruitment for the US' name='twitter:title'>
+<meta content='Conexus Medstaff are dedicated to developing career pathways for international nurses and healthcare professionals in the USA' name='twitter:description'>
+<meta content='' name='twitter:image'>
+<link href='https://www.conexusmedstaff.com/' rel='canonical'>
+<script type='application/ld+json'>{"@context":"http://schema.org","@type":"Organization","name":"Conexus","url":"https://www.conexusmedstaff.com","logo":"https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTYvMDgvMDUvMTMvNTgvMjYvNzY5L2xvZ28ucG5nIl1d"}</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    $('.navigation_list a[href="/' + location.pathname.split("/").pop() + '"]').parentsUntil('.navigation_list').addClass('active');
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+      // SET COOKIE IF DOESNT EXIST
+    if (document.cookie.indexOf("volcanic_saved_jobs_id") < 0) {
+      document.cookie = "volcanic_saved_jobs_id=" + Math.random().toString(36).slice(2) + "-" + Math.random().toString(36).slice(2) + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    };
+
+    //LOOP SAVED JOBS
+    $.getJSON( "/api/v1/users/saved_jobs.json?locale=en", function( data ) {
+      var items = [];
+
+      $.each( data['saved_jobs'], function( key, val ) {
+        //IF SAVED JOBS DROPDOWN LIST EXISTS
+        if ($("ul[data-saved-jobs-list]").length){
+          var item = "<li data-job-id='" + val['job'].id + "'><a href='" + val['job'].job_url + "'>" + val['job'].job_title + "</a></li>";
+          items.push(item);
+        };
+
+        if ($("a#save_job_" + val['job'].id).length){
+          $("a#save_job_" + val['job'].id).html(data['unsave_text']);
+          $("a#save_job_" + val['job'].id).attr("href", val['job'].job_url + "/unsave_job");
+        }
+
+      });
+
+      //IF SAVED JOBS DROPDOWN LIST EXISTS  --> POPULATE LIST
+      if ($("ul[data-saved-jobs-list]").length){
+        if (items.length > 0){
+          $("ul[data-saved-jobs-list]").html(items.join( "" ));
+        };
+        $("span[data-saved-jobs-count]").html(items.length);
+      };
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    $('#full_name').attr('autocomplete','off');
+  });
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134269056-1"></script>
+
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('js', new Date());
+
+  gtag('config', 'UA-134269056-1');
+
+</script>
+<script>var t_code = "DS-2544-866-982";</script>
+<script src="//ds360.co/track/script.js"></script>
+<script src="https://d3jh33bzyw1wep.cloudfront.net/assets/params_to_cookie-1067aeb36bd9df1b79c0ffbb14b0ba7d.js"></script>
+<script src="https://d3jh33bzyw1wep.cloudfront.net/assets/ga_referrer_extraction-4a372fbc01b4f1510ae1360f937c5500.js"></script>
+
+<link href="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsImNvbXBpbGVkX3RoZW1lX2Fzc2V0cy9jb25leHVzL3BuZy9mYXZpY29uLnBuZyJdXQ" rel="Shortcut Icon" type="image/x-icon">
+
+<!--<script src="//secure.eventbeat.co.uk/dist/feedv1/eventbeat.js?apikey=67334b6ff37a655d0b3813f0cf74d95f&items=4"></script>-->
+<!--<script src="//secure.eventbeat.co.uk/dist/feedv1/eventbeat.js?apikey=cff22e2ff785bcca146a8aae337bec3b&items=4"></script>-->
+
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-84019270-1', 'auto');
+        ga('send', 'pageview');
+        ga('set', 'anonymizeIp', true);
+
+        /*
+          Extract the Client ID from Google Analytics object
+        */
+
+        // Constants vars
+        var _GA_KEY =       'clientId';
+        var _COOKIE_NAME =  'google_cid';
+
+        // Instance vars
+        var _gcid = null;
+
+        // Try and get the GA Client ID - Catch any errors
+        try {
+          ga(function(_t) {
+            _gcid = _t.get(_GA_KEY);
+            var _cookie_str = [_COOKIE_NAME, _gcid].join('=') + '; path=/';
+            document.cookie = _cookie_str;
+          });
+        }
+
+        catch(err) { console.log('Error: ', err); }
+      </script>
+
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"light-bottom"};
+</script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin -->
+</head>
+<body>
+	<div>
+		<div class="connecting-loader"><p>Connecting...</p></div>
+
+		<header id="header" class="header">
+    <div class="container-fluid">
+        <div class="header-logo">
+            <a href="/"></a>
+        </div>
+        <div class="header-content">
+        	<ul class=" hidden-sm hidden-xs" id="top-social-ul">
+				<li><a class="social-top-links" href="https://www.facebook.com/conexusmedstaff" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+				<li><a class="social-top-links" href="https://twitter.com/ConexusMedStaff" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+				<li><a class="social-top-links" href="https://www.linkedin.com/company/826664?trk=tyah&trkInfo=clickedVertical%3Acompany%2CclickedEntityId%3A826664%2Cidx%3A3-1-3%2CtarId%3A1476181226180%2Ctas%3ALINK%20Healthcare%20Professionals" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+			</ul>
+            <ul id="top-links" class="hidden-sm hidden-xs">
+
+                    <li><a href="/client-contact">Clients</a></li>
+
+                        <li><a href="/your-application">Apply</a></li>
+
+                    <li><a class="login" href="/users">Login</a></li>
+
+            </ul>
+            <nav id="utility-nav" class="visible-xs visible-sm">
+    			<a class="mobile-btn" href="#menu"><span>Menu</span><i class="fa fa-bars"></i></a>
+    			<nav id="menu">
+    				<div>
+    					<ul class="menu navigation_list"><li class=""><a href="/about" target="_self">About Us</a></li><li class=""><a href="/vision-mission-values" target="_self">Our Values</a></li><li class=""><a href="/clients" target="_self">Clients</a></li><li class=""><a href="/international-nurses" target="_self">Nurses</a></li><li class=""><a href="/nursing-graduates" target="_self">Graduates</a></li><li class=""><a href="/travel-nurses" target="_self">Travel Nurses</a></li><li class=""><a href="/blog/tag/blog" target="_self">Blog</a></li><li class=""><a href="/us-ready-training" target="_self">US Ready</a></li></ul>
+    					<ul class="menu">
+
+    							<li><a href="/users/register/new/registration"><i class="fa fa-user-plus"></i>Register</a></li>
+    							<li><a href="/users/login"><i class="fa fa-sign-out"></i>Login</a></li>
+
+    					</ul>
+    				</div>
+    			</nav>
+    		</nav>
+        </div>
+
+            <nav id="main-nav" class="container hidden-xs hidden-sm">
+            	<div class="container clearfix">
+            		<ul class="clearfix navigation_list"><li class=""><a href="/about" target="_self">About Us</a></li><li class=""><a href="/vision-mission-values" target="_self">Our Values</a></li><li class=""><a href="/clients" target="_self">Clients</a></li><li class=""><a href="/international-nurses" target="_self">Overseas Nurses</a></li><li class=""><a href="/nursing-graduates" target="_self">Nursing Graduates</a></li><li class=""><a href="/travel-nurses" target="_self">Travel Nurses</a></li><li class=""><a href="/blog/tag/blog" target="_self">Blog</a></li><li class=""><a href="/us-ready-training" target="_self">US Ready</a></li></ul>
+            	</div>
+            </nav>
+
+    </div>
+</header>
+
+
+<section id="main-banner">
+    <div class="slider">
+        <div class="slider-item">
+        	<figure>
+        	    <img alt="Start your journey to a career in the US with Conexus Medstaff" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMzAvMDkvNTMvMjYvODgyL1VudGl0bGVkIGRlc2lnbiAoMikucG5nIl0sWyJwIiwidGh1bWIiLCIyMDAweDkwMFx1MDAzYyJdXQ" />
+        	</figure>
+        	<article class="container">
+        	    <h1 style="text-align: center;">&nbsp;START YOUR JOURNEY&nbsp;</h1>
+        	</article>
+    	</div>
+        <div class="slider-item">
+        	<figure>
+        	    <img alt="Discover the recruitment services we offer for international nurses to work in the US" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMzAvMDkvNTkvNTUvMzE5L1VudGl0bGVkIGRlc2lnbiAoMykucG5nIl0sWyJwIiwidGh1bWIiLCIyMDAweDkwMFx1MDAzYyJdXQ" />
+        	</figure>
+        	<article class="container">
+        	    <h1><big><strong><span style="color:#FFFFFF;">&nbsp;</span><a data-cke-saved-href="/international-nurses" href="/international-nurses"><span style="color:#ffffff;">Nurses</span></a><span style="color:#FFFFFF;">&nbsp;</span></strong></big></h1>
+        	</article>
+    	</div>
+        <div class="slider-item">
+        	<figure>
+        	    <img alt="Conexus Medstaff are the number one choice for nursing graduates who want to work in the US" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMzAvMDkvNTUvMjgvNjg2L0luZGlhbmEgLSBJbmRpYW5hcG9saXMgYXQgTmlnaHQgLSBSTnMucG5nIl0sWyJwIiwidGh1bWIiLCIyMDAweDkwMFx1MDAzYyJdXQ" />
+        	</figure>
+        	<article class="container">
+        	    <h1><big><strong><span style="color:#FFFFFF;">&nbsp;</span><a data-cke-saved-href="/international-usa-graduates" href="/international-usa-graduates"><span style="color:#FFFFFF;">Graduates</span></a></strong></big></h1>
+        	</article>
+    	</div>
+        <div class="slider-item">
+        	<figure>
+        	    <img alt="Turn to Conexus Medstaff for the best international healthcare talent you can retain" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMzAvMDkvNTYvNDEvNjY3L1dpc2NvbnNpbiAtIENsaWZmcyBTdW5zZXQgLSBDbGllbnRzLnBuZyJdLFsicCIsInRodW1iIiwiMjAwMHg5MDBcdTAwM2MiXV0" />
+        	</figure>
+        	<article class="container">
+        	    <h1><big><strong><span style="color:#FFFFFF;">&nbsp;</span><a data-cke-saved-href="/clients" href="/clients"><span style="color:#FFFFFF;">Clients</span></a><span style="color:#FFFFFF;">&nbsp;</span><span style="color:#F0FFF0;"></span></strong></big></h1>
+        	</article>
+    	</div>
+	</div>
+
+</section>
+
+
+
+
+<section id="rs-plain-text" class="section">
+    <div class="container">
+        <header class="section-header">
+            <h2>Conexus Medstaff: The right choice</h2>
+        </header>
+        <article>
+            <p style="text-align: center;"><span id="docs-internal-guid-f3d1fea8-7fff-8347-1be6-4e9a7d21a639">For America’s healthcare providers and top worldwide nursing talent, Conexus Medstaff is the definitive choice for a long-term nursing recruitment partner. Candidate or client, we deliver the best nurses in the most cost-effective way. Our influential industry experts supply, support and cultivate capable nursing talent that healthcare organizations retain.&nbsp;</span></p>
+        </article>
+    </div>
+</section>
+
+
+<section id="text-section" class="text-section section  ">
+
+
+        <figure class="bg-img black">
+            <img alt="Become a US Registered Nurse with Conexus Medstaff" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTgvMDYvMjUvMTIvMTYvMDUvMzQ0L3RleHQtc2VjdGlvbi5qcGciXSxbInAiLCJ0aHVtYiIsIjIwMDB4NjAwXHUwMDNjIl1d" />
+        </figure>
+
+    <div class="container-fluid">
+        <article>
+            <h1>Start Your American Adventure</h1><p style="text-align: center;"><a data-cke-saved-href="https://www.conexusmedstaff.com/your-application" href="https://www.conexusmedstaff.com/your-application">Apply Now</a></p><p style="text-align: center;"><br></p>
+        </article>
+    </div>
+</section>
+
+
+
+
+<section id="rs-boxes-3" class="section">
+    <div class="container">
+        <header class="section-header">
+            <h2 style="text-align: center;"><span id="docs-internal-guid-ef9ce514-7fff-2853-0702-25f72cab9901">Nurses: Get US Ready!</span></h2><p dir="ltr" style="text-align: center;"><span id="docs-internal-guid-266975bf-7fff-bf78-ecf3-0c8a72f9b838">Support from recruiters should go beyond the placement.</span></p><p dir="ltr" style="text-align: center;"><span id="docs-internal-guid-266975bf-7fff-bf78-ecf3-0c8a72f9b838">That’s why we’ve engineered an education service that benefits the careers of our candidates and the clients they work for alike. From initial training programs all the way through continuous professional development during the assignment, we stridently advocate keeping our nurses up to date with best practice nursing practices in the US that lead to best practice care delivery.</span></p><p dir="ltr" style="text-align: center;"><span id="docs-internal-guid-266975bf-7fff-bf78-ecf3-0c8a72f9b838">Designed and delivered by our in-house clinical nurse educators, US Ready is our intensive, bespoke training program for placed candidates. It offers full access to training, preparatory classes and an extensive, world-renowned nursing resources library <strong>worth $5,000 </strong></span><strong>- all for free.</strong></p><p dir="ltr" style="text-align: center;"><span id="docs-internal-guid-266975bf-7fff-bf78-ecf3-0c8a72f9b838">But it’s only available to candidates who register and earn placement with us. <strong><a data-cke-saved-href="https://www.conexusmedstaff.com/your-application" href="https://www.conexusmedstaff.com/your-application">So sign up today</a></strong>.</span></p><p dir="ltr" style="text-align: center;"><br></p><hr><h2 dir="ltr" style="text-align: center;"><br></h2><h2 dir="ltr" style="text-align: center;"><span>DOWNLOADS AND RESOURCES</span></h2>
+        </header>
+
+
+
+
+
+
+
+
+
+
+
+        <ul class="cta-list">
+            <li>
+                <a href="http://d36.co/13JBy" class="block-link">
+                    <figure class="bg-img secondary">
+                        <img alt="W1siziisijiwmtkvmduvmjivmtivmzavntevntk1l3n0zxrob3njb3bllmpwzyjdlfsiccisinrodw1iiiwimzuwedm1mfx1mdazyyjdxq" data-reference="efefdea8e99a6674ed34c2cd6c4c146e" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMjIvMTIvMzAvNTEvNTk1L3N0ZXRob3Njb3BlLmpwZyJdLFsicCIsInRodW1iIiwiMzUweDM1MFx1MDAzYyJdXQ" />
+                    </figure>
+                    <figure class="svg-icon">
+                        <p>&nbsp;</p>
+                    </figure>
+                    <article class="fg-text">
+                        <h2 style="text-align: center;"><style type="text/css">
+p.p1 {margin: 0.0px 0.0px 4.0px 0.0px; text-align: center; font: 10.0px 'Trebuchet MS'; color: #434343; -webkit-text-stroke: #434343}
+span.s1 {font-kerning: none}</style>GUIDE:&nbsp;Delivering&nbsp;Nursing Talent</h2><p><style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Trebuchet MS'; color: #666666; -webkit-text-stroke: #666666}
+span.s1 {font-kerning: none}</style><span class="s1"><strong>Conexus</strong> helps American healthcare organizations address <strong>nurse staffing requirements</strong> in the face of widespread shortages.</span></p>
+                    </article>
+                </a>
+            </li>
+            <li>
+                <a href="https://oliver-dev.s3.amazonaws.com/2019/10/19/16/22/01/531/Conexus%20-%20Complete%20Guide%20to%20Nursing%20Job%20Interviews%20[DOWNLOAD].pdf" class="block-link">
+                    <figure class="bg-img secondary">
+                        <img alt="W1siziisijiwmtkvmduvmjivmtivmzevmzcvmzg4l1nvy2lhbcbdb21tdw5pdhkuanbnil0swyjwiiwidgh1bwiilcizntb4mzuwxhuwmdnjil1d" data-reference="0876e3adf29217e4acb3aeb4b44c5402" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMjIvMTIvMzEvMzcvMzg4L1NvY2lhbCBDb21tdW5pdHkuanBnIl0sWyJwIiwidGh1bWIiLCIzNTB4MzUwXHUwMDNjIl1d" />
+                    </figure>
+                    <figure class="svg-icon">
+                        <p>&nbsp;</p>
+                    </figure>
+                    <article class="fg-text">
+                        <h2><span style="font-family: inherit; font-size: 24px; font-weight: 600; background-color: transparent;">GUIDE:&nbsp;Nursing Job Interviews</span></h2><p>The&nbsp;<strong>Conexus Medstaff Complete Guide to Nursing Interviews</strong>&nbsp;is the ultmiate compendium of tips to get started.</p><style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Trebuchet MS'; color: #666666; -webkit-text-stroke: #666666}
+span.s1 {font-kerning: none}</style>
+                    </article>
+                </a>
+            </li>
+            <li>
+                <a href="/res" class="block-link">
+                    <figure class="bg-img secondary">
+                        <img alt="W1siziisijiwmtkvmduvmjivmdkvmzyvntgvmzcwl05dtevyic0gym94lmpwzyjdlfsiccisinrodw1iiiwimzuwedm1mfx1mdazyyjdxq" data-reference="1bb4de74ea160fb1373f7012b679a451" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDUvMjIvMDkvMzYvNTgvMzcwL05DTEVYIC0gYm94LmpwZyJdLFsicCIsInRodW1iIiwiMzUweDM1MFx1MDAzYyJdXQ" />
+                    </figure>
+                    <figure class="svg-icon">
+                        <p>&nbsp;</p>
+                    </figure>
+                    <article class="fg-text">
+                        <h2>GUIDE:&nbsp;The NCLEX-RN Exam</h2><p>Our <strong>official guide to the NCLEX-RN exam</strong> helps you take the next step in your toward a rewarding career as an RN in the USA.</p>
+                    </article>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+
+<section id="testimonials" class="testimonials section  ">
+
+
+    <div class="container">
+        <header class="section-header">
+            <h2 style="text-align: center;">Our Testimonials</h2>
+        </header>
+        <ul class="format slider">
+
+                <li>
+                    <article>
+                        <p>Conexus Medstaff introduced their Program to our Rachell Allen group. It was a transparent, detailed presentation on helping me achieve my US RN dream. They&#39;ve been there every step of the way: answering questions, assisting my application so everything was taken care of.</p>
+
+                    </article>
+                    <footer>
+                        <span>Nimjoy, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>After I signed the contract, Conexus kept on updating me with the process and able to answer my queries all the time. My I-140 was filed and approved in six months. I am grateful for the care that Conexus has given me: they treat me like a family.&nbsp;</p>
+
+                    </article>
+                    <footer>
+                        <span>Marriane, US RN </span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I&#39;d like to thank my Conexus and Rachell Allen family for their endless support. I gave my trust to Conexus Medstaff in fulfilling my American dream and they never failed me, as they got my USCIS application approved. Just trust the process and persevere.</p>
+
+                    </article>
+                    <footer>
+                        <span>Jim Oliver, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I just wanted to let you know that I spoke to Cynthia. We had a great conversation and she was thorough in explaining all of my questions. I honestly think that you guys are awesome at Conexus! I appreciate all the assistance being rendered to me.</p>
+
+                    </article>
+                    <footer>
+                        <span>Charles, International USA Graduate - RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>There was a meet and greet with other Conexus nurses and their families and they are all so nice and friendly! We soon became friends! Here in Kentucky, it&#39;s calm and serene with great scenery and very nice people who always offer to help.&nbsp;</p>
+
+                    </article>
+                    <footer>
+                        <span>Joselyn, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>Cynthia, Marianne, Veronica, and the whole Conexus team supported me from step 1. They were on top of things, making sure everything works out fine. I&#39;m now working on a dream job I never thought would&#39;ve happened. Conexus helped me and my husband see a brighter future.</p>
+
+                    </article>
+                    <footer>
+                        <span>Jexan, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>It&rsquo;s not easy to leave everything behind, the comfort, the usual everyday things, but the time came to venture to a new chapter in my life. Thanks to Conexus this was made possible. It&rsquo;s hard enough to go through all the process without guidance, but Conexus and their staff held my hand from start to finish. This was just a dream that I thought would never come true. Through the years they were constantly updating us on what was happening up to the dates of the interview at the embassy. Manila-based staff was kind enough to get me through step by step from my medical exam to the interview at the embassy. Finally, the time came for our flight &ndash; everything was provided and we were guided through until we finally got to the US. It was a pretty long way just to get here but finally, we did. Tom, Cynthia and Crystal (from Conexus) were kind enough to meet us at Charleston airport even though it was almost 1 am and brought us to the hotel for the night, had rooms ready for us, and some breakfast that morning. Then a one hour drive wasn&#39;t a long one as they were talking us through what was going to happen for the week. They were with us through it all from getting around to buy stuff, helping us get settled in our comfortable apartments and meeting hospital personnel. I would like to thank the Staff of Conexus for everything they have done.</p>
+
+                    </article>
+                    <footer>
+                        <span>Michelle S, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I&#39;ll be forever grateful to Conexus for helping me achieve a once in a lifetime opportunity given to a selected few. Coming to America was never going to be easy, nevertheless, I kept myself busy working in UAE while the seemingly endless process is taking place so, without me knowing it, my deployment date was actually at hand! I still can&#39;t believe that my American Dream will happen but with prayers and keeping a hopeful heart - everything is possible! I&#39;m equally grateful for today&#39;s technology that means, despite the distance, I am able to communicate with Tom (at Conexus) and his staff, with regards to all the proceedings and requirements that their candidates need to comply. I would admit, it&#39;s a mutual effort from the candidate and Conexus. If I was non-compliant of whatever was asked of me, I wouldn&#39;t be here in Wyoming. Thank you very much to the management and staff of Conexus and professionals especially to Liza of the Philippines office, kudos to her, and to the rest of the candidates waiting for their deployment. Live the dream!</p>
+
+                    </article>
+                    <footer>
+                        <span>Anne, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>It has always been my dream to see and feel what life in the West is. Journeying everyday through challenges, never have I thought about letting go of my dreams. With the help of Conexus, my dreams turned into reality. Taking this huge step, my two kids and I left our home country, the Philippines, to start a new life in West Virginia. We are so thankful to Conexus for supporting us all throughout this journey. For accommodating us in every possible way, my family extends our gratitude to you. Thank you for introducing us to Jason, a co-worker, during our trip here in the United States, for making sure that we won&rsquo;t be traveling the whole trip alone, for the housing accommodation, for introducing me to the management of the hospital and lastly, for assuring us that we can survive this drastic change in our lives. We really appreciate the effort you exerted since day one. You don&rsquo;t just grant wishes and dreams, you also build a friendship.</p>
+
+                    </article>
+                    <footer>
+                        <span>Jo Anne, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I want to express my words of thanks to you and all the staff of Conexus for all your work in finding a job for me. I am in a state of anxiety although excitement is leading me along. I am looking forward to meeting you very soon. THANK YOU.</p>
+
+                    </article>
+                    <footer>
+                        <span>Prodelyn, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I am a Filipino BSN-RN working in a step-down unit in Arizona, USA. I migrated here in October 2012. Since then (and even up to now that I am directly hired by the hospital where they have deployed me), I still communicate with Conexus; in fact, I have built friendships with most of them. This good relationship led me to refer to a Filipino friend who is already here in the US and I am happy with the way Conexus has helped her too. Conexus has assisted me throughout the process and has paid all fees to complete the requirements I need to work here in the US. They also helped me obtain an Immigration Visa, not only for me but for my entire family. Arriving in the US, Conexus arranged my travel and accommodation. They have paid for my first-month apartment rental in anticipation that I might not be able to start working while waiting for my RN license. They have given me a sign-in bonus which is enough to buy what is necessary to start. Conexus has assured me that I have an employer who has hired me based on my competencies and skills. I received relevant benefits which include overtime pay, holiday pay, health, and dental insurance, paid leaves and others that they have specifically outlined in my contract of employment. Throughout this placement process, Conexus has maintained an open line of communication with me, and I believe with the rest of their nurses. Being one of their first nurses deployed in the US, they have been open for suggestions, they valued my opinions and I saw them change their process through this date to better serve their clients. In fact, I have volunteered to offer my service as their Ambassador to meet and greet the new nurses coming in town to help better serve them. Looking back three years, I am grateful with what I have achieved, not really bragging, but I have bought my family a nice comfortable pool home, mobilized them with cars, my three sons are all outstanding in school, my husband has landed a decent IT job in the same hospital where I work and I simply love my life and my job. How did these all start? When Conexus helped me come here to the US. Conexus may still be young in this industry but their willingness and being open to learn and achieve more is what sets them apart from the rest of the companies who have been in this business for years and has stopped hearing from their nurses.</p>
+
+                    </article>
+                    <footer>
+                        <span>Monette, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>The staff at Conexus have been absolutely amazing. Kirsty Docwra in the UK office gave me so much advice and support on obtaining my FCCPT certificate, and sitting the NPTE. Once I was at the stage of having a US license she passed me over to Tom Konitzer in the United States. Tom listened to exactly what were the most important issues for me to re-locate to the US with a young family and most certainly delivered. Both Kirsty and Tom have been so professional yet friendly and always approachable about the tiniest of irrelevant queries I have had. Communication is excellent with any contact responded to quickly. I can honestly say they made me feel like I was their only client. I would have no hesitation in recommending this company to anyone wanting to do the same.</p>
+
+                    </article>
+                    <footer>
+                        <span>Jennifer M, Physiotherapist</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I compiled with the required documents and in 3 months time, I received my visa with a bonus. My kids, who were not even born before the 2012 embassy interview, also made it here in the USA.&nbsp;With Conexus, the American Dream is real and not just a TV show or a dream. Thank you so much and keep it up!!!</p>
+
+                    </article>
+                    <footer>
+                        <span>Mary, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>Thanks again for being a big part to achieve my American dream, truly you and my Conexus family will remain in my heart where we may be. You will always be treasured. Kudos to all of you! Hoping you will help more Filipino nurses and their families make their American dream come true.</p>
+
+                    </article>
+                    <footer>
+                        <span>'E', US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I just want to say that I am so glad to see you and very grateful that you really take good care of us when we arrived. We do appreciate it and will cherish and treasure it a lot. Your kindness to us is a blessing.&nbsp;</p>
+
+                    </article>
+                    <footer>
+                        <span>'R', US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I was inspired to become a nurse in the USA because of job security and many opportunities for advancement. I choose to be sponsored by Conexus Medsstaff because of their experience and their capability to provide better service as well as their attentiveness to my needs.&nbsp;</p>
+
+                    </article>
+                    <footer>
+                        <span>Maria, US RN</span>
+                    </footer>
+                </li>
+
+                <li>
+                    <article>
+                        <p>I am with Conexus Medstaff, who remain very supportive, helpful and always see the best in me through the years. I am so thankful to them for the warmth they give their nurses. I will be forever grateful to the Conexus &#39;Family&#39;.</p>
+
+                    </article>
+                    <footer>
+                        <span>Racquel, US RN</span>
+                    </footer>
+                </li>
+
+        </ul>
+    </div>
+</section>
+
+
+<section id="social-blogs" class="social-blogs section  ">
+    <div class="container-fluid">
+        <header class="section-header">
+            <h2>Latest blogs</h2>
+        </header>
+        <div class="row row-eq-height first-section">
+            <div class="col-md-5">
+
+<section id="social-blogs-content">
+    <ul class="format  slider ">
+
+
+            <li>
+                <a href="/blog/2019/11/national-database-of-nursing-quality-indicators-ndnqi-survey-for-pressure-ulcers" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisimnvbxbpbgvkx3rozw1lx2fzc2v0cy9jb25lehvzl2pwzy9pbwctcgxhy2vob2xkzxiuanbnil1d" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsImNvbXBpbGVkX3RoZW1lX2Fzc2V0cy9jb25leHVzL2pwZy9pbWctcGxhY2Vob2xkZXIuanBnIl1d" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>National Database of Nursing Quality Indicators (NDNQI) survey for Pressure Ulcers</h3>
+						<p>As a new grad, staging pressure ulcers/wounds was a struggle for me until I joined the wound care team of my hospital. Quarterly, they participated in the National Database of Nursing Quality Indicators (NDNQI) survey for Pressure Ulcer Rate - Process and Outcome to determine if it was community-acquired or hospital-acquired, or unit-acquired. NDNQI is database that measures nursing quality. It is the only national, nursing quality measurement program which provides hospitals with unit-level performance comparison reports to state, national, and regional percentile distributions (NDNQI, 2010b, p. 2). It provides participant hospitals with nationals’ comparative unit level data for use in quality improvement activities and develops national data on the relationships between nurse staffing and patient outcomes, NDNQI, 2011). NDNQI data are used to show the impact nurses have on quality of care. These indicators are nursing sensitive, so they show how nursing care, such as good oral care, or skin care or the interventions that prevent patient falls, are so important to patient outcomes (Trossman, 2006). Most people are very familiar with HCAHPS (Hospital Consumer Assessment of Healthcare Providers and Systems) scores. The NDNQI is one way to document what we as nurses do. It is also a way to document what effect changes in staffing have on patient care (Nickitas, 2010, p.385). During the survey, nurses were paired up and assigned to different units to assess patient’s skin and check for how well nurses are taking care of patients skin and documenting skin assessments upon admission. On the scheduled day for the hospital NDNQI event, just before nurses start the survey, we go over the link below to help us understand staging pressure ulcers/wounds and how to prevent it. I enjoyed going over the link. It has a wealth of information and each module is very helpful. My very good knowledge about skin assessment was as result of participating in the NDNQI survey and completing the modules. As you transition to the United States, completing these modules will actually help with understanding how to access and document skin assessment including heat to toes assessments as well. Please complete the module by using the instructions below. https://members.nursingquality.org/NDNQIPressureUlcerTraining/ Click on the link above, then click on Begin. The next page requires just your name, last name and email address. Complete Module 1-4, take the post test and receive Contact hours. Good Luck! Ijeoma Enweana</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/meet-the-conexus-team-cathy-vollmer-and-benjie-jalasco" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmtgvmtivmjavmzgvodmxl3bhcgvylxrlyw0uanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMTgvMTIvMjAvMzgvODMxL3BhcGVyLXRlYW0uanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Meet The Conexus Team: Cathy Vollmer and Benjie Jalasco!</h3>
+						<p>At Conexus, we’re committed to building real and lasting relationships with all of our nurses and US hospitals. That’s why each month, we’ll be introducing you to members of the amazing Conexus team, so you can find out a bit more about their background and why they do what they do. We’re kicking things off with our VP Operations Cathy Vollmer and Clinical Nurse Recruiter/Business Support Manager Benjie Jalasco. So, grab yourself a coffee and prepare to get acquainted with our superstars! Cathy Vollmer, VP Operations My Expertise I’ve been working in healthcare for over 30 years, starting as a Registered Nurse after gaining my diploma and Bachelor of Science in Nursing and becoming a member of the American Organization of Nurse Executives (AONL). I moved into healthcare staffing, which is my key area of expertise today. I have experience in crisis and MSP/VMS staffing and have recruited healthcare professionals working on a per diem, contract and direct-hire basis. Why Conexus? I really connected with the core values of Conexus. As a nurse, I wanted to promote nursing and encourage more people to enter the profession. I know that recruiting international nurses is a great solution to help healthcare organizations in the US with the current nursing shortage. I also find the background of the Conexus team members amazing. Their diversity and real-life experiences coming to the US mean they truly understand the journey of our nurses. We stay with the nurse and their families before they come to the US and throughout their assignment. My Favourite Conexus Value Is... Care & Support. We genuinely care about both our internal and external colleagues and want to offer the best support that we can every step of the way. Outside Of Work, You’ll Find Me… With my family. We’re an active bunch and love to cycle, kayak and see the world! Benjie Jalasco, Clinical Nurse Recruiter/Business Support Manager My Expertise I have over 16 years of nursing experience, having completed a Master of Arts in Nursing with a Major in Medical and Surgical Nursing. I started my career working in a government hospital in the Philippines as an MS/ER/OR nurse while at the same time as working part-time as a Clinical Instructor. I went on to work in KSA for five years as a Nursing Supervisor, a member of the recruitment team to the Philippines, and an implementor of nursing and patient safety standards. At Conexus, I evaluate nurses’ CVs and conduct clinical interviews to validate their expertise and ensure they meet the required qualifications. I help to maintain relationships with Conexus partners in the Philippines and Asia, as well as coordinating and collaborating with our marketing department. Why Conexus? I have a genuine goal of helping international nurses make their dream of living and working in the US a reality. Immediately after communicating with Conexus, I knew this was a team I wanted to join. Establishing the market in the Philippines has been challenging, but with the passion and support of my colleagues, I’ve been able to contribute to the company’s growth in this area. We really are much more than a recruiter - we treat our nurses as partners and ensure no one is left out. There’s no better feeling than seeing a nurse that I’ve interviewed go on to work in the US and lead a happy life there. My Favourite Conexus Value Is... Passion. We have the fire to serve our nurses and hospitals and always go the extra mile to help them achieve their goals. Outside Of Work, You’ll Find Me… Traveling, both locally and internationally. I’m definitely a beach person! I also play badminton and am a huge fan of volleyball. Stay tuned to our Meet The Conexus Team blog series and get acquainted with the people who help to change lives every day.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/ripped-from-the-headlines-saving-the-planet-texas-wages-and-identical-twins" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmtevmtyvmjavmjgvnjkwl3jpchblzgzyb20uanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMTEvMTYvMjAvMjgvNjkwL3JpcHBlZGZyb20uanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Ripped From The Headlines: Saving The Planet, Texas Wages, And Identical Twins</h3>
+						<p>Each month, the Conexus team brings you a selection of news stories from the US healthcare industry. Always informative, sometimes controversial and occasionally heartwarming, Ripped From The Headlines is the ideal coffee-break read for nurses and nursing students! Hospitals Race To Save Patients — And The Planet The global health care industry is responsible for two gigatons of carbon dioxide each year, or 4.4 percent of worldwide net emissions — the equivalent of 514 coal-fired power plants. In fact, if the global health care sector was a country, it would be the world’s fifth-largest emitter of greenhouse gases. So, what’s being done about it? This eye-opening research from the Association of American Medical Colleges (AAMC) takes a deep dive into what academic medicine is doing to reduce healthcare’s carbon footprint. Boston Named Top US Hospital City According to rankings by digital healthcare company Medbelle, Boston has the best hospitals in the US and second-best in the world (behind Tokyo). The rankings measured a series of metrics including medical workforce, education, quality of care, satisfaction, treatment efficacy, accessibility, and more. Boston has a number of highly regarded hospitals, including Massachusetts General, Brigham & Women's and Beth Israel Deaconness Medical Center. Despite such rankings proving controversial due to a debate over how exactly to judge quality healthcare, it’s still worth a read. Here’s How Much A Nurse Is Getting Paid Per Hour By City In Texas As you may know, Conexus places international nurses in both acute and long-term healthcare facilities in the state of Texas. And for a good reason! With the state’s major cities home to endless high-ranking hospitals, the need for quality nurses is always high. If you want to find out how much nurses earn in each Texas city, then you’ll be glad to know that city-specialist Nacrity has put in the leg work with this comprehensive list. And Finally…Identical Twin Nurses Help Deliver Identical Twin Girls At Georgia Hospital We love a happy ending for Ripped From The Headlines, and this month is no exception. This story comes from a Georgia hospital where identical twin sisters working as nurses found themselves in the delivery room together for the first time, helping to deliver twin sisters! Tori Howard and Tara Drinkard welcomed Addison and Emma Williams to the world on September 25. In a statement, Drinkard said she didn’t realize she was going to be in the delivery room with her sister until 10 minutes before the C-section was scheduled to take place: “It was so special to be in the twins’ delivery with Tori. We have always worked well together, even when we were little.” Stay tuned to our blog for more editions of Ripped From The Headlines or revisit the archive today.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/international-nurses-vs-travel-nurses-what-are-the-real-cost-savings" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdgvmtqvmtuvntcvmtm4l3ryyxzlbc1udxjzaw5nlxrvcgljcy5qcgvnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDgvMTQvMTUvNTcvMTM4L3RyYXZlbC1udXJzaW5nLXRvcGljcy5qcGVnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>International Nurses Vs. Travel Nurses: What Are The REAL Cost Savings?</h3>
+						<p>Over the past few weeks, we’ve explored the traditional 13-week contract and why more acute and long-term care facilities are exploring alternatives. One popular option is recruiting international nurses through specialist staffing agencies like Conexus. There are 3 million immigrants already in the US healthcare system, accounting for 1 in 4 workers in that field, according to Harvard Medical School (2019). One of the key benefits of hiring international nurses instead of travel nurses is cost savings, but how much money can they actually help you to save? Here, we take a closer look... Work With The Right People A specialist staffing agency that supplies international nurses can deliver significant savings in comparison to travel nurses. While agencies providing travel nurses offer housing stipends, per diem rates, and travel expenses, those supplying foreign nurses charge facilities a flat hourly rate with no extra costs. To demonstrate, we’ve provided some working examples of the costs associated with our Conexus international nurses vs. travel nurses: Hospital Scenario: ONE RN Specialty Nurse Conexus Medstaff International Nurse Traditional Travel Nurse $55/hr x 40 hours $2,200 $68/hr x 40 hours $3,000 13 weeks x 2200 $28,600 13 weeks x 2720 $39,000 52 weeks $114,400 52 weeks $156,000 Hard Cost Savings = $41,600 Hospital Scenario: ONE RN Med Surg (General) Nurse Conexus Medstaff International Nurse Traditional Travel Nurse $55/hr x 40 hours $2,200 $68/hr x 40 hours $2,720 13 weeks x 2200 $28,600 13 weeks x 2720 $35,360 52 weeks $114,400 52 weeks $141,440 Hard Cost Savings = $27,040 Long Term Care: ONE RN Conexus Medstaff International Nurse Traditional Travel Nurse $50/hr x 40 hours $2000 $60/hr x 40 hours $2400 13 weeks x 2000 $26,000 13 weeks x 2400 $31,200 52 weeks $104,000 52 weeks $124,800 Total cost savings = $27,040 [Costs based on the placement of one nurse. Conexus does not charge additional rates for Speciality 1 and Speciality 11 Nurses.] But Wait, There’s More… International nurses don’t just deliver cost savings for facilities. Other key benefits include: Time Savings. The continuous turnover of travel nurses every 13-weeks means training and orientation need to be repeated regularly, which sees staff taken away from day-to-day duties. Commitment. A significant driver for international nurses is stability and the opportunity to become part of an organization and community. On the flip-side, travel nurses are usually looking to move on after their assignment and explore a new city or state. Staff Morale. With Conexus, international nurses commit to extended contracts with facilities, enabling existing nursing teams to build strong bonds with one another, share experiences, and offer support. High-Quality Nurses. Today’s immigration regulations mean that all foreign-trained nurses are highly-skilled, have a bachelor’s degree, and an average of five to ten years of nursing experience. Improved Patient Care. The addition of overseas nurses helps to diversify a workforce, which multicultural patients respond positively to. Are International Nurses The Ideal Option For Your Facility? Find out more about international nurses and other staffing alternatives in our free guide - 'Alternatives to the traditional 13-week assignment'. Click the image below to download: ​</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/13-week-nursing-contracts-yes-or-no" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdgvmtqvmtmvmtqvmzcvaw4uanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDgvMTQvMTMvMTQvMzcvaW4uanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>13-Week Nursing Contracts: Yes or No?</h3>
+						<p>We know that 13-week travel nursing contracts are standard for US healthcare facilities, but as explored in last week’s blog post, it’s no longer the only option. So, how do you know when these short contracts are the right choice for you? And, when should alternatives be explored? In this post, we examine some of the common staffing challenges that healthcare facilities face today and the steps you can take to make sure the optimum solution is delivered. Challenge 1: We have a consistently high vacancy rate at our facility. Could travel nurses offer the solution? Conexus says: No! If your facility has multiple vacancies, travel nurses could work out to be a very expensive option. While they’ll certainly help you fill vacancies quickly, you’ll spend more money in the long-run on high hourly pay rates. Additionally, travel nurses have a consistently higher drop-off rate compared to permanent staff or international nurses, so the chances are that your vacancies will keep opening up anyway. Challenge 2: We have a high staff turnover rate. Could travel nurses solve this problem once and for all? Conexus says: No. If you’re continuously losing nursing staff, then the chances are there’s a bigger issue in your organization that needs to be addressed, whether that’s your orientation process, workload, or the benefits provided for your nurses. Ironing out these challenges means your permanent staff are likely to remain with your facility, and, in turn, you won’t need to spend more money and time on hiring and training a continuous stream of travel nurses. Challenge 3: A key member of the nursing team has just left our facility unexpectedly. Shall we draft in the help of a travel nurse? Conexus says: Absolutely. Travel nurses are an ideal option when you need qualified staff to fill a gap quickly. However, there’s a caveat: A travel nurse should only be used in this scenario as a short term solution while you’re recruiting and training a new permanent member of staff. Challenge 4: Cold and flu season is approaching! Surely travel nurses are the right option to help us deal with higher patient numbers? Conexus says: You’re correct. 13-week contracts are ideal when you know there’s going to be a short-term spike in patient demand. Challenge 5: A new unit is opening in our facility, and we need nurses to staff it. Would travel nurses be suitable? Conexus says: This depends. A new facility will require permanent staff to ensure optimum success and the best patient care from day one. Whether you need travel nurses to fulfill these roles depends on how much time you’ve had to prepare for the new unit. If you’ve had more than 12 months to plan, then you should have been able to map out a strategy to recruit permanent nurses who are ready to start work in time for the opening. If it’s been a last-minute addition to the facility, then travel nurses can help you get things started while you recruit permanent staff. What Are The Alternatives To 13-Week Contracts? More healthcare facilities are going global and using established staffing agencies to secure the very best international nurses who will help them to reduce costs and improve patient care. Find out more about international nurses and other staffing alternatives in our free guide - 'Alternatives to the traditional 13-week assignment'. Click the image below to download: ​</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/diabetes-awareness-month" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdqvmtqvndevmtuvoduxl0rpywjldgvzlmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDQvMTQvNDEvMTUvODUxL0RpYWJldGVzLmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Diabetes Awareness Month</h3>
+						<p>All through November it is Diabetes Awareness Month, which aims to improve people’s understanding of both Type 1 and Type 2 diabetes. On November 14th, the world acknowledges World Diabetes Day. The World Health Organization states that the incidence of diabetes is a growing global issue. They state that the number of people with diabetes around the world has risen from 108 million in 1980 to 422 million in 2014 (https://www.who.int/news-room/fact-sheets/detail/diabetes). Type 1 diabetes Type 1 diabetes (previously known as insulin-dependent, juvenile or childhood-onset) occurs when the body cannot produce insulin. Only about 1 in 10 people are Type 1 diabetic. The specific cause of type 1 diabetes is not known, although it is thought to be an autoimmune condition, where the body’s immune system attacks the cells in the pancreas. It is not preventable with current knowledge. Symptoms include excessive excretion of urine (polyuria), thirst (polydipsia), constant hunger, weight loss, vision changes, and fatigue. These symptoms may occur suddenly and people are often diagnosed in childhood. Type 2 diabetes Type 2 diabetes (formerly called non-insulin-dependent, or adult-onset) occurs when the body can’t make enough insulin, or is unable to use it effectively. Type 2 diabetes is the most prevalent type of diabetes, being mostly diagnosed in adults. Risk factors for developing Type 2 diabetes include being overweight and a lack of physical inactivity. Symptoms may be similar to those of type 1 diabetes, but are often less marked. As a result, the disease may be diagnosed several years after onset, once complications have already arisen. Diabetes Awareness Month The focus of awareness of this year is the link between diabetes and cardiovascular disease. Cardiovascular disease is a general term for conditions affecting the heart or blood vessels. Examples of cardiovascular disease include: coronary heart disease where the flow of oxygen to the heart is compromised; strokes caused by either bleeds on the brain or ischaemic attacks; and peripheral arterial disease where there are blockages in the arteries usually to the legs. For people living with diabetes, having high blood glucose levels over time leads to damage to the blood vessels and nerves that control the heart. However other risk factors for cardiovascular disease also tend to be seen in many people who suffer from Type 2 diabetes, such as obesity, high blood pressure and abnormal cholesterol. Statistics from the American Heart Association website (www.heart.org) state that people with diabetes are two to four times more likely to die from heart disease compared to those without diabetes. And at least 68 percent of people age 65 or older with diabetes die from some form of heart disease; and 16% die of stroke. However the chance of developing heart disease can be lessened, especially for people with diabetes, if they make some healthier lifestyle choices. These include: ensuring that their blood glucose levels remain within acceptable limits; not smoking; eating a balanced diet; exercising regularly</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/13-week-nursing-contracts-what-are-the-pros-and-cons" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdqvmtqvmtevndivmzavve4zlmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDQvMTQvMTEvNDIvMzAvVE4zLmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>13-Week Nursing Contracts: What Are The Pros And Cons?</h3>
+						<p>Last week, we explored some of the historical reasons why travel nursing contracts in the US tend to be 13 weeks in length. Whether it’s down to traditional accommodation contracts, FMLA leave, or orientation periods, the 13-week contract remains a popular option in travel nursing. Despite this, there’s no one-size-fits-all option when it comes to solving staffing needs for both acute and long-term care facilities. Here, we take a look at some of the pros and cons of hiring nurses on 13-week contracts to help you make a more informed decision. Pros Access To Quality Nurses. No facility should compromise on quality when they need nursing staff at short notice. Luckily, travel nurses are often provided through a staffing agency that calls upon a database of top-quality nurses, whose skills and experience have been vetted. This means that they can supply the right people to suit your facility and specific needs right away. Super Fast Orientation. Because travel nurses are highly experienced and used to navigating different workplaces, they do not require an extensive orientation period to get up-to-speed. For example, it typically takes between 12 and 14 weeks to train a new permanent member of staff, while travel nurses expect no more than a 24-40 hour orientation. Staffing Flexibility. All healthcare facilities experience fluctuations in staffing needs. Travel nurses can work precisely when you need them, whether that’s to cover absence and orientation periods or accommodate seasonal demands. Additionally, if you hire travel nurses and decide that permanent members of staff would be more suitable, you’re not locked into lengthy contracts. Cons Continual Turnover. A constant stream of new faces can be a strain on your permanent staff who may feel as though they’re continually training travel nurses and are unable to form lasting bonds. This lack of relationship-building can also have a negative impact on patient care, and could, therefore, lead to poor HCAHPS scores. Cost. For the convenience of having highly-qualified nurses available on-demand, facilities pay a higher hourly rate. Additionally, travel nurses are increasingly looking for tax incentives that can push their rate up even further in comparison to hiring permanent staff or international nurses. Drop-Off Rate. Unfortunately, if we compare travel nurses with international nurses, there’s a higher drop-off rate of 9 percent compared to 2 percent. Commitment. While travel nurses are undoubtedly hard workers, they know they’re moving on after 13 weeks and so tend to be less invested in a facility’s long-term vision and the local community in comparison to permanent staff. What Are The Alternatives? More healthcare facilities are going global and using established staffing agencies to secure the very best international nurses who will help them to reduce costs and improve patient care. Find more about international nurses and other staffing alternatives by downloading our FREE guide: “Alternatives to the Traditional 13-week Assignment: Why more US healthcare facilities are turning their back on traditional short nursing contracts.”​ Find out more about international nurses and other staffing alternatives in our free guide - 'Alternatives to the traditional 13-week assignment'. Click the image below to download:</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/travel-nurse-contracts-why-13-weeks" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdqvmtavmzavntevmtgyl1romi5qcgvnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDQvMTAvMzAvNTEvMTgyL1ROMi5qcGVnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Travel Nurse Contracts: Why 13 Weeks?</h3>
+						<p>Whether it’s to cover shifts when a member of staff leaves suddenly or to accommodate seasonal fluctuations, travel nurses are often used to fill gaps in staffing at US hospitals and healthcare facilities. Travel nurses can be recruited on both short- and long-term contracts, which are typically between 8 and 26 weeks, with the most common contracts lasting 13 weeks. The question is, why is 13 weeks the optimum time for a travel nurse? In fact, several factors determine the standard contract as 13 weeks, including: Housing. One of the main reasons comes down to standard apartment contracts in the US being 13 weeks, so a contract reflecting this makes life a lot easier for nurses. Leave. The Family and Medical Leave Act (FMLA) provides employees with up to 12 weeks of unpaid, job-protected leave per year, so 13-week contracts adequately cover these periods of absence. Orientation. Onboarding and orientation periods for new nurses can be anything from four weeks, all of the way up to 12, meaning that travel nurses can provide the ideal cover as new starters acclimatize. Times Are Changing Shifts in staffing needs, lifestyles, and even technology have meant contracts for travel nurses can now be more fluid. For example, the emergence of Airbnb and Vrbo means that nurses can now arrange their own housing and are no longer constrained by 13-week accommodation contracts. Additionally, hiring nurses on shorter contracts can often work out to be more expensive and can fail to provide adequate continuity of care for patients. This means that facilities are looking at alternative options to bolster their teams. What Are The Alternatives? Increasingly, healthcare facilities are going global in a quest to secure the right nursing talent who will them reduce costs and improve patient care. In fact, there are 3 million immigrants already in the healthcare system, accounting for 1 in 4 workers in that field, according to Harvard Medical School (2019). Find out more about international nurses and other staffing alternatives in our free guide - 'Alternatives to the traditional 13-week assignment'. Click the image below to download:</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/11/why-are-malaysian-nurses-moving-to-the-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtevmdevmtyvmjuvmtqvndy1l21hbgf5lmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTEvMDEvMTYvMjUvMTQvNDY1L21hbGF5LmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Why Are Malaysian Nurses Moving To The US?</h3>
+						<p>If you’re a Malaysian nurse, there’s never been a better time to consider a new life in the US. Job opportunities for nurses are plentiful due to the country’s aging population, coupled with the average age of a US RN at 58 years old. In fact, the RN workforce in the US was 2.9 million in 2016 and is expected to increase by 438,100 in 2026 to take RNs to 3.4 million. This means an additional 203,700 new RNs are needed in the US each year up to 2026 to fill both newly created roles and replace retiring nurses. What’s In It For You? A new life and career in the US can be highly rewarding for Malaysian nurses in many ways, including: Rate of Pay The US offers some of the highest nursing salaries in the world. According to Payscale, the average salary for a staff nurse in Malaysia is RM 30,975, compared to the average nurse salary in the US of $63,000 USD, equivalent to RM 262,422. Visa Program The country’s Green Card program means that your spouse and children under the age of 21 can travel with you. Additionally, your spouse can work in the US, and your children are entitled to free education until the age of 18. Career Development Due to increasing shortages, nurses in the US are guaranteed job security for years to come. Additionally, high numbers of nurses entering retirement age mean there’s ample scope to progress your career. Standard of Living Nurses in the US have access to excellent public services and a high standard of living. Living costs can also be lower in comparison to certain areas in Malaysia. When cost-of-living website Numbeo compared Singapore to the US, it found: Consumer prices in the US are 12.42 percent lower than Singapore Rent prices in the US are 34.98 percent lower than Singapore Grocery prices in the US are 0.26 percent lower than Singapore Local purchasing power in the US is 26.22 percent higher than Singapore More Leisure Time US nurses typically work a 40-hour week. In comparison, according to the work-life index published by technology company Kisi, Kuala Lumpur has the worst overall work-life balance among 40 major cities in the world, with people working an average of 46 hours a week, with 22 percent working for more than 48 hours. Take The Next Step Conexus will be hosting a recruitment drive in Kuala Lumpur with Melorita Healthcare the week of December 9th. We’ll be meeting with nursing candidates to explain more about how you can live and work in the US. If you want to attend the event, register your interest with us by emailing info@conexusmedstaff.com or via Melorita Healthcare.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/calling-all-indian-nurses-with-a-priority-date-between-2006-and-2009" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmjgvmtevmtuvmduvndyxl2fwcgeuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMjgvMTEvMTUvMDUvNDYxL2FwcGEuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Calling All Indian Nurses With A Priority Date Between 2006 and 2009!</h3>
+						<p>The October 2019 Visa Bulletin saw a significant movement in priority dates for Indian nurses. It means that if you have a current priority date between 2006 and 2009 and have been abandoned by a previous sponsor, your dream could STILL be a reality a lot sooner than you might have thought. Considering the historic backlog of Indian registered nurses who already have US visa priority dates, this is excellent news and a significant movement. Why? There are several reasons why priority dates change; however, the US is in critical need of qualified nurses. According to the Bureau of Labor Statistics (2019), employment of registered nurses in the US is projected to grow by 13 percent from 2016 to 2016. This is much faster than the average 7 percent for all other occupations in the US and means that 203,700 new RNs are required each year up to 2026. Whether it’s a fall in nursing student numbers, the current US RN workforce nearing retirement, or the growing number of nurses moving away from the bedside to retrain in alternative roles, there’s a plethora of reasons why US facilities are turning to foreign nurses for their staffing needs. Why Indian Nurses? India is a key area for recruitment for US healthcare facilities due to the level of education, and how established the profession is in the country. In 1908, Trained Nurses of India (TNAI) was formed, followed by the Indian Nursing Council (INC) in 1947, which upgraded the basic educational qualification required for candidates entering the profession. After the INC was established, most of the states in India established their State Nursing Councils (SNC), whose primary function was to conduct examinations and the registration of qualified nurses to permit them to practice. Such movements were responsible for maintaining standards and uniformity in nursing education in India. Your Next Steps With Conexus Our team of healthcare and immigration experts not only help nurses taking their first steps towards a career in the US, but we also work with nurses who have existing priority dates who have been abandoned by their previous sponsor. Once you apply and have all the required documents prepared, you don’t need to worry about a thing when it comes to obtaining your visa, finding a role, mobilizing to the US, and gaining support throughout your assignment. Conexus is made up of a team dedicated Clinical Recruiters, Clinical Nurse Educators, Immigration Specialists, and Operation Experts who are dedicated to supporting your journey to the US and beyond. So, what are you waiting for? If you’re a qualified nurse in India with an existing priority date between 2006 and 2009, Conexus can make your US dream a reality. Apply today or email your questions to info@conexusmedstaff.com.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/breast-cancer-awareness-month" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmjevmtmvntivndkvmzu3l2jyzwfzdcbjyw5jzxigy292zxiuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMjEvMTMvNTIvNDkvMzU3L2JyZWFzdCBjYW5jZXIgY292ZXIuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Breast Cancer Awareness Month</h3>
+						<p>October is breast cancer awareness month, and people are wearing pink to raise awareness of breast cancer, and to raise money for further research and treatment of the disease. Breast cancer is the second most common cancer to affect American women (skin cancer is the most common). However worldwide, breast cancer is the most common cancer in females. National Breast Cancer Foundation Inc, 2019 at: https://www.nationalbreastcancer.org/breast-cancer-facts Men can also get breast cancer. The incidence is much rarer in men than in women, at a rate of around 1 in 1,000 American men. Although not all of the causes of breast cancer are clear, the most significant risk factor is age, with 80% of all female cancers being diagnosed after age 50 years, and age 60 years in males. Other risk factors are known to be having a family history of the disease, drinking alcohol, being overweight, and taking the combined contraceptive pill and hormone replacement therapy. Symptoms The first symptoms of breast cancer usually appear as an area of thickened tissue in the breast or a lump in the breast or an armpit. Other symptoms include: pain in the armpits or breast that does not change with the monthly cycle pitting or redness of the skin of the breast, similar to the surface of an orange a rash around or on one of the nipples discharge from a nipple, possibly containing blood a sunken or inverted nipple a change in the size or shape of the breast peeling, flaking, or scaling of the skin on the breast or nipple Most breast lumps are not cancerous. However, women should visit a doctor for an examination if they notice a lump on the breast. Stages Staging of breast cancer is done by using information about the tumour size and location, lymph node involvement, and metastases. There are stages 0 to 4, with some sub groups within these grades. Here is a brief overview of each stage and sub group. Stage 0: Stage zero (0) describes disease that is only in the ducts of the breast tissue and has not spread to the surrounding tissue of the breast. It is also called non-invasive cancer Stage 1A: The tumor is small, invasive, and has not spread to the lymph nodes Stage 1B: Cancer has spread to the lymph nodes and the cancer in the lymph node is larger than 0.2 mm but less than 2 mm in size. There is either no evidence of a tumor in the breast or the tumor in the breast is 20 mm or smaller Stage 2A: Any 1 of these conditions: There is no evidence of a tumor in the breast, but the cancer has spread to 1 to 3 axillary lymph nodes. It has not spread to distant parts of the body The tumor is 20 mm or smaller and has spread to the axillary lymph nodes The tumor is larger than 20 mm but not larger than 50 mm and has not spread to the axillary lymph nodes Stage 2B: Either of these conditions: The tumor is larger than 20 mm but not larger than 50 mm and has spread to 1 to 3 axillary lymph nodes The tumor is larger than 50 mm but has not spread to the axillary lymph nodes Stage 3A: The cancer of any size has spread to 4 to 9 axillary lymph nodes or to internal mammary lymph nodes. It has not spread to other parts of the body. Stage IIIA may also be a tumor larger than 50 mm that has spread to 1 to 3 axillary lymph nodes Stage 3B: The tumor has spread to the chest wall or caused swelling or ulceration of the breast or is diagnosed as inflammatory breast cancer. It may or may not have spread to up to 9 axillary or internal mammary lymph nodes. It has not spread to other parts of the body Stage 3C: A tumor of any size that has spread to 10 or more axillary lymph nodes, the internal mammary lymph nodes, and/or the lymph nodes under the collarbone. It has not spread to other parts of the body Stage IV (metastatic): The tumor can be any size and has spread to other organs, such as the bones, lungs, brain, liver, distant lymph nodes, or chest wall. Metastatic cancer found when the cancer is first diagnosed occurs about 6% of the time. More commonly, metastatic breast cancer is found after a previous diagnosis of early breast cancer. Breast cancer subtypes There are 3 main subtypes of breast cancer that are determined by doing specific tests on a sample of the tumor. These tests will help your doctor learn more about your cancer and recommend the most effective treatment plan. Testing the tumor sample can find out if the cancer is: Hormone receptor positive: Breast cancers expressing estrogen receptors (ER) and/or progesterone receptors (PR) are called “hormone receptor positive.” These receptors are proteins found in cells. Tumors that have estrogen receptors are called “ER positive.” Tumors that have progesterone receptors are called “PR positive.” Only 1 of these receptors needs to be positive for a cancer to be called hormone receptor positive. This type of cancer may depend on the hormones estrogen and/or progesterone to grow. Hormone receptor-positive cancers can occur at any age, but are more common in women who have gone through menopause. About 60% to 75% of breast cancers have estrogen and/or progesterone receptors. Cancers without these receptors are called “hormone receptor negative.” HER2 positive: About 10% to 20% of breast cancers depend on the gene called human epidermal growth factor receptor 2 (HER2) to grow. These cancers are called “HER2 positive” and have many copies of the HER2 gene or high levels of the HER2 protein. These proteins are also called “receptors.” The HER2 gene makes the HER2 protein, which is found on the cancer cells and is important for tumor cell growth. HER2-positive breast cancers grow more quickly. They can also be either hormone receptor positive or hormone receptor negative. Cancers that have no or low levels of the HER2 protein and/or few copies of the HER2 gene are called “HER2 negative.” Triple negative: If a tumor does not express ER, PR, or HER2, the tumor is called “triple negative.” Triple-negative breast cancer makes up about 15% to 20% of invasive breast cancers. Triple-negative breast cancer seems to be more common among younger women, particularly younger black and Hispanic women. Triple-negative cancer is also more common in women with a mutation in the BRCA1 or BRCA2 genes. Experts recommend that all people with triple-negative breast cancer younger than 60 be tested for BRCA gene mutations. For more information about treatment options for patients with breast cancer visit: www.breastcancer.org www.cancer.net/cancer-types/breast-cancer www.nationalbreastcancer.org</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/cost-of-living-canada-vs-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtgvmtqvntyvmtgvmta1l1vtlwfuzc1dyw5hzglhbi1gbgfnluzlyxr1cmutsw1hz2utntgwedmzmy5qcgcixsxbinailcj0ahvtyiisijm2mhgzntajil1d" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTgvMTQvNTYvMTgvMTA1L1VTLWFuZC1DYW5hZGlhbi1GbGFnLUZlYXR1cmUtSW1hZ2UtNTgweDMzMy5qcGciXSxbInAiLCJ0aHVtYiIsIjM2MHgzNTAjIl1d" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Cost of Living: Canada Vs. US</h3>
+						<p>It’s no secret that there’s a shortage of nurses in the US right now. According to the US Bureau of Labor and Statistics, there will be a deficit of approximately 1.1 million nurses by 2020. This means that employment opportunities for nurses are projected to grow at a faster rate than all other occupations from 2016 through 2026. To help overcome these staffing challenges, the US has been actively recruiting and employing foreign nurses for more than 50 years. A 2008 study found that 20.2 percent of foreign nurses that entered the US had emigrated from Canada. US hospitals seek to employ Canadian nurses due to the lack of a language barrier, fewer cultural differences, and a level of education and training that’s comparable to US nurses. So, What’s In It For Canadian Nurses? While US healthcare facilities benefit significantly from hiring nurses from Canada, why should you make the move? Research conducted back in 2006 asked Canadian nurses working in North Carolina why they’d chosen to leave their home country for the US. The reasons included: Opportunity to obtain full-time employment Desire to travel Chance to specialize in a specific field Educational opportunities Improved pay and benefits Indeed, improved pay is a major factor. The US is the currently third-highest paying country in the world for nursing, with the average salary approximately $73,550 (124,590.98 CAD), with the potential to earn more in certain states. However, the benefits of a higher salary can only be realized if the cost of living is comparable to or lower than that in Canada. That’s why the Conexus team has taken three US cities that we place nurses into and compared the living costs with those of Toronto, Ontario, to demonstrate the savings you can make. Toronto, ON Jacksonville, NC Iowa City, IA Lexington, KY Apartment (1 bedroom) in City Centre 2,158.92 C$ 840.45 C$ 1,153.64 C$ 1,133.98 C$ Apartment (1 bedroom) Outside of Centre 1,730.43 C$ 755.49 C$ 894.76 C$ 924.29 C$ Apartment (3 bedrooms) in City Centre 3,560.47 C$ 1,773.75 C$ 2,242.97 C$ 1,783.13 C$ Apartment (3 bedrooms) Outside of Centre 2,538.06 C$ 1,313.89 C$ 1,803.64 C$ 924.29 C$ One-way Ticket (Local Transport) 3.25 C$ 1.64 C$ 1.31 C$ 1.31 C$ Gasoline (1 liter) 1.25 C$ 0.87 C$ 0.91 C$ 0.89 C$ Preschool childcare, Full Day, Private, Monthly for 1 Child 1,532.72 C$ 788.33 C$ 897.82 C$ 870.45 C$ Milk (regular), (1 liter) 2.78 C$ 1.08 C$ 0.91 C$ 0.75 C$ Eggs (regular) (12) 3.49 C$ 2.96 C$ 2.18 C$ 2.15 C$ Local Cheese (1kg) 19.48 C$ 12.75 C$ 13.03 C$ 10.51 C$ Water (1.5 liter bottle) 3.07 C$ 2.50 C$ 2.47 C$ 2.41 C$ McMeal at McDonald’s (or Equivalent Combo Meal) 10.49 C$ 8.86 C$ 9.53 C$ 9.16 C$ Meal for 2 People, Mid-range Restaurant, Three-course 80.00 C$ 66.10 C$ 55.18 C$ 59.12 C$ Additionally, the US dollar is especially strong right now, so, coupled with the low cost of living in the US, you’ll have more money in your pocket every month. The question now is, what are you waiting for? Next Steps If you’re in Toronto from Oct 30 to Nov 1, you can join the Conexus team for a special Meet & Greet at the Intercontinental Toronto Centre Hotel. We’ll be on-hand to answer any queries you may have about life as a nurse in the US, visa requirements, and ongoing support in your next career move. Find out more and register for the event today, or get in touch with Conexus to find out what we can do for your career. Additional Bonus: November 2019-January 2020 Conexus Medstaff are offering an additional $3,000 bonus to nurses that are able to mobilize to the US from Canada across November, December or January. To be eligible for the bonus candidates need to have Canadian citizenship and be able to obtain a visascreen to ensure you can mobilize within this timeframe.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/conexus-medstaff-appoints-new-vice-president-of-operations" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtgvmtqvndkvmdyvndg0l2nhdgh5lnbuzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTgvMTQvNDkvMDYvNDg0L2NhdGh5LnBuZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Conexus Medstaff Appoints New Vice President of Operations</h3>
+						<p>Leading international recruitment firm Conexus Medstaff has appointed a new Vice President amid ambitious plans to expand the company’s footprint across the Americas. Cathy Vollmer joins the business as Vice President of Operations, where she will be responsible for leading the strategic development of partnerships throughout the firm’s impressive client portfolio and business pipeline. The aim of this activity is to grow all areas of Conexus Medstaff’s portfolio of recruitment services and resources across its core sectors, which includes the provision of both International and US nurses. This fast expanding infrastructure has enabled Conexus Medstaff to service multinational clients with staff throughout its territories and to strategically source the very best nursing talent, wherever they are in the world.​ Cathy brings with her vast healthcare experience across both the nursing and recruitment fields, most recently as a Senior Vice President for Favorite Healthcare Staffing. In her most recent role, Cathy spent 10 years increasing sales and profitability, managing branch operations and personnel and enabling business expansion. Speaking about Cathy’s appointment, Andrew Moreton, CEO, said: “We are absolutely thrilled to have Cathy join our team as we continue to grow our international footprint, expand our resources and bring our unique brand of talent services to new clients. “We are building a team with the breadth of experience to help deliver strategic nursing solutions that can end inefficient practices and improve hiring results in these tough times. Our unique approach ensures that the company delivers nursing led leadership. Cathy’s background as a nurse is a great asset to the company in delivering this to some of the leading hospitals and healthcare facilities in the US.” Before her role at Favorite, Cathy held senior operational leadership posts at FASTAFF and StarMed. Cathy is a CSP (certified staffing professional) through ASA, as well as a former Registered Nurse, gaining her Diploma in Nursing from Missouri Baptist School of Nursing, St. Louis, Missouri and Bachelor of Science in Nursing from Maryville University. Cathy remains active in the nursing community as a member of AONL. Additional Press Coverage: SIA: https://www2.staffingindustry.com/Editorial/Daily-News/People-PEO-group-Conexus-Glassdoor-Bullhorn-TSR-51683 DWS Worldwide: https://dwsworldwide.com/people-peo-group-conexus-glassdoor-bullhorn-tsr/</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/ripped-from-the-headlines-podcast-special" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtgvmtavmzkvmzcvntc3l3bvzgnhc3qucg5nil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTgvMTAvMzkvMzcvNTc3L3BvZGNhc3QucG5nIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Ripped From The Headlines: Podcast Special</h3>
+						<p>The Conexus team loves to bring you all of the latest news regarding nursing and healthcare in the US. However, we don’t just rely on headlines to gather intel. More and more, we’re plugging in our headphones to take advantage of the abundance of insightful podcasts available to download and listen to for free. That’s why we’re bringing our top recommendations for shows and episodes that you can get stuck into. NRSNG There’s so much valuable information to be found in the NRSNG podcast series. The podcast aims to deliver insightful, current content to both nursing students and professionals. The host, Jon Haw, brings his nursing skills, insight, and support to help nurses on their journey. Episode subjects include NCLEX prep, nursing school struggles, scrubcheats, and coffee! Nursing and NCLEX Mastery Providing education at every stage of a nurse’s professional life, the Nursing and NCLEX Mastery Podcast series covers a wide range of topics including nursing school tips, tricks, strategies, NCLEX exams, as well as stories and experiences shared from nursing students and qualified RNs. Good Nurse Bad Nurse This lighthearted podcast details current happenings in the sector and topical issues nurses face in their professional and personal lives. Taking a ‘good cop bad cop’ format, one story tells an inspiring tale that touches the heart, while the other explores a more dark and mysterious area in nursing. Launching in May 2018, there’s an extensive library to revisit, including episodes on nursing frustrations, seasonal efforts against the flu, and stories from the fields of radiology, pharmacy science, ophthalmology, mental health, and workplace bullying. Nurse Talk Media Hosted by two smart, sassy, political RNs who sport a combined 65 years of service between them, Nurse Talk Media provides a backdrop on social-conscious nursing issues ranging from patient care, patient safety, drug shortages, and workplace safety. This engaging podcast asks nurses to personally decide how to better the profession in the US through awareness and education, springing from the ethos that healthcare is a right and not a privilege. Episode: How Can The US Healthcare System Use Digital To Tackle Problems? If you have a spare 30 minutes, we recommend this interesting Futures In Focus podcast episode featuring Eric Langshur, CEO at Abundant Venture Partners. Getting to a fundamental place where US healthcare isn’t just good but exceptional is a challenge, which, when solved, will affect us all. Langshur talks about the sort of data that will be incorporated into US healthcare management, and how US Millennials would rather have a broken phone than a broken bone (his words, not ours!). Have a listen to his views on the system now and the pathways to healthcare excellence in 10 years. What podcasts do you listen to? Share your healthcare and nursing podcast recommends with the Conexus team by emailing info@conexusmedstaff.com. Stay tuned to our blog for more editions of Ripped From The Headlines or revisit the archive today.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/opioid-crisis" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtuvmtmvndevndgvotk5l29waw9pzcbjcmlzaxmuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTUvMTMvNDEvNDgvOTk5L29waW9pZCBjcmlzaXMuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Opioid Crisis</h3>
+						<p>The United States of America is currently in the midst of an “Opioid Crisis”. The term refers to the growing number of hospitalizations and deaths from the overuse of opioids, including prescription medications, illicit drugs, and analogues. The opioid crisis is affecting both rural and urban areas in the US, and is tearing people’s lives apart, both those who are addicted to opioids and those who have to see their loved ones under the grasp of these drugs. Opioids and Opiates are both substances that act upon the Central Nervous System, the difference between them being where they are derived from. Opioids are synthetic (man-made) or semi-synthetic, while Opiates are naturally occurring substances derived from opium (which comes from Poppies). Morphine and Codeine are naturally occurring derivatives of opium. They can be used on their own, but are often modified to produce semi-synthetic Opioids such as Hydrocodone (Vicodin), Oxycodone (Oxycontin) and Heroin (chemically processed Morphine). There are also fully synthetic Opioids such as Fentanyl. Opioids and opiates produce very similar effects on the brain, and for the purpose of this blog, they will be referred to as opioids. They work by binding to receptors on the brain and mimic the action of some naturally occurring chemicals, blocking the person’s perception of pain and creating comfort. Other effects that can occur with opioid use are feelings of euphoria, as well as side effects such as drowsiness, nausea, confusion and respiratory depression. When using prescription opioids over a period of time, patients develop a tolerance for the medication, and often require a larger dose to achieve the pain relieving effects that were initially experienced. This can then lead into a risk factor for the patient developing issues with overuse, addiction and even overdose. People who try to break the cycle of overuse and addiction can experience strong withdrawal symptoms including nausea, vomiting, abdominal cramping, insomnia, muscle aches, irritability and anxiety. However patients may not be able to source opioids legally (i.e. obtain a valid prescription for their needs) if opioids are no longer clinically indicated. For example a patient may be prescribed opioids after surgery, and once the recovery time is complete should no longer require their use and the physician may decline to prescribe more opioids. Patients who have developed issues with overuse, tolerance or addiction (even mild) during this time may end up seeking out similar medications which are illegally made or sourced (including even stronger Opioids such as heroin). The following data is from the Centers for Disease Control and Prevention website (2019). From 1999-2017, almost 400,000 people died from an overdose involving any opioid, including prescription and illicit opioids. In 2017, more than 70,000 people died from drug overdoses, of which almost 68% involved a prescription or illicit opioid. This number was 6 times higher than in 1999, and made opioid use a leading cause of injury-related death in the United States. The graph below splits data between overdose deaths caused by heroin use, use of common prescription opioids, and use of other synthetic opioids. And there are 3 distinct periods of increases in overdose deaths, one attributed to each group. The Centers for Disease Prevention and Control states that the best ways to prevent opioid overdose deaths are to improve opioid prescribing, reduce exposure to opioids, prevent misuse, and treat opioid use disorder. Physicians are being urged to prescribe less opioids to help to ease the epidemic, and many states now have stricter guidelines on the prescribing of opioids, alongside National guidelines from the CDC. They are being encouraged to prescribe non-opioid based analgesics and to encourage their patients to explore non-pharmaceutical pain control methods, especially in chronic pain management. However there are still some instances where these guidelines are not applicable such as for patients undergoing cancer treatment, palliative care, or end of life care. Recently the owners of opioid manufacturing companies are being brought to account for their part in the Opioid Crisis in the United States. The increase in the use of opioids started during the 1990’s when pharma manufacturers began creating new drugs that were marketed as being a safer alternative to Morphine. Purdue, a pharma manufacturing company (owned by the Sackler brothers) invented, produced and began distribution of Oxycontin in 1996. The marketing for this drug has been claimed to be misleading, in that it was described as being safe and effective, and doctors were encouraged to prescribe it for their patients. Purdue is now being sued in over two thousand civil lawsuits, and the company had offered a $12 billion settlement which would be said to leave it bankrupt, although the case has currently been paused.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/filipino-nurses-partner-us-journey" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmdcvmdkvmtyvmjevnjuxl3nodxr0zxjzdg9ja18xnzy0mjmyodiuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMDcvMDkvMTYvMjEvNjUxL3NodXR0ZXJzdG9ja18xNzY0MjMyODIuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Why Filipino Nurses Must Pick The Right Partner For Their US Journey</h3>
+						<p>For many nurses working in the Philippines, the US continues to present fantastic job opportunities. In fact, Filipino nurses now account for over 4 percent of nurses practicing in the US, making them the largest group of internationally educated nurses in the country. While a shortage of nurses in the US means an abundance of opportunities, some unscrupulous operators are promising Filipino nurses a new life and career in the US but are failing to deliver. You may have read in the news this month about a case involving 200 nurses who were recruited in the Philippines and sent to work at nursing homes in New York. It was ruled that the nursing homes violated US anti-trafficking law by failing to pay wages and even using threats of serious harm to the nurses. Such a horrifying story can understandably affect confidence for nurses in the Philippines and raise questions about what you need to look for in a staffing partner. Here, the Conexus team provides key areas you need to pay attention to before you commit to a team that promises work in the US. Are they asking you for money up-front? Warning bells should be ringing if a staffing agency asks you, as a nurse, for payment to secure an opportunity in the US. Here at Conexus, we never ask for a fee from our nurses. There’s absolutely no reason you should be paying an agency to find you a role, so be aware of those that ask for one. Who have they worked with? You have the right to ask for case studies and examples of an agency’s work. Find out the names of the healthcare facilities they work with in the US and ask to be put in touch with other nurses they’ve successfully placed. Conexus ensures all of our nurses are comfortable at every stage of the journey. If you want to connect with other nurses to find out about their experience in the US and what it’s like to work with our team, we will put you in direct contact. Do they offer support? This is crucial to ensure that you not only reach the US but also that you’ll be successful in your career once you get there. Conexus is made up of a team of dedicated Clinical Recruiters, Clinical Nurse Educators, Immigration Specialists, and Operation Experts who are dedicated to supporting your journey to the US and throughout your assignment. From day one, we’ll appoint you with a personal Case Manager to handle your application (with all processing costs covered, of course), and our team goes above and beyond to make you feel at home in your new community. Can you meet the team? We can’t emphasize enough the importance of meeting the team that you’ll be working with. If you don’t have the opportunity to meet them, it suggests they don’t have sufficient resources to support you properly. Conexus regularly meets with our nurses, whether that’s in your home country before you embark on your journey, or at your new workplace throughout your assignment.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/daca-an-update" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmdevmdgvmzmvmzyvndg2l2rhy2euanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMDEvMDgvMzMvMzYvNDg2L2RhY2EuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>DACA: An Update</h3>
+						<p>September was another busy month in the headlines for the Deferred Action for Childhood Arrivals program. The big news came on the 26th when the University of California filed a brief in United States Supreme Court in San Francisco to challenge President Trump’s decision to rescind the DACA. This filing follows a suit in 2017 by the University’s President Janet Napolitano against the U.S. Department of Homeland Security after Trump’s repeal of the DACA program. The Trump administration announced it planned to phase out DACA, claiming it had been created “without proper statutory authority.” The University filing alleged that such a repeal violated students’ rights. U.S. District Court Judge William Alsup granted an injunction in January 2018 that required the DHS to continue processing DACA renewal applications as the Ninth Circuit Court of Appeals reviewed the case. The legality of the DACA program is not at issue in the current filing, but rather how the government chose to wind it down. Lawyer Theodore B. Olson said the government failed to “consider the costs of its decisions, including loss of work authorization for 700,000 DACA recipients.” The Supreme Court will hear arguments on the latest filing on November 12. As things stand, lower courts have issued two nationwide injunctions forcing the government to continue to allow renewals in the program. A decision siding with the administration could strip protections for nearly 700,000 DACA recipients in a case that will undoubtedly dominate media headlines in the run-up to the 2020 election. Speaking of the election, Senator Bernie Sanders made his thoughts on DACA clear in an interview this month. He said: “On day one, we will restore legal status to 1.8 million young people in the DACA program.” Conexus works with nursing students under DACA, helping them to secure their future career as an RN in the US. Our team continues to visit university and college campuses’ across the US, including recent visits to Arizona and California, to meet with DACA students. Stay tuned to our blog and Facebook page for the latest news on our university partnerships, events, and initiatives for DACA recipients.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/10/developing-delegation-skills" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtuvmtmvndavntevndmxl2rlbgvnyxrpb24uanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTUvMTMvNDAvNTEvNDMxL2RlbGVnYXRpb24uanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Developing Delegation Skills</h3>
+						<p>Developing Delegation Skills One of the most complex nursing skills is that of delegation. This skill is what most of our international nurses’ struggle with after deployment. It requires sophisticated clinical judgment and final accountability for patient care. Effective delegation is based on one’s state nurse practice act and an understanding of the concepts of responsibility, authority, and accountability. Registered Nurses (RNs) are brokers of patient care resources. RNs synthesize data collected by nurses and other healthcare professionals to coordinate the patient’s safe and individualized care to best address patient and family needs in a way that maximizes available resources. RNs decide what patient care interventions are necessary and how, when, and by whom these interventions need to be provided. These decisions are made in a clinical environment in which shrinking resources and increased demands for services heighten the need for nurses to delegate care based on professional guidelines and their state nurse practice acts. Perhaps one of the most difficult responsibilities an RN has is that of effective delegation. RNs are required to understand what patients and families need and then engage the appropriate care givers in the plan of care in order to achieve desired patient outcomes while maximizing the available resources on the patient’s behalf. Delegation is an important skill that influences clinical and financial outcomes, yet, an RN’s delegation skills often are not evaluated in the same manner as other clinical skills, even though a number of nurses continue to need help in delegating appropriately. The following scenario is a typical situation that RNs frequently describe when sharing their need for more staff: Near the end of her shift, the RN finds that the LPN and nursing assistant have all their work completed and are sitting in the nursing station waiting for the next shift to arrive. The RN has been running all evening trying to juggle competing patient needs, such as administering blood and initiating IV antibiotics for patients assigned to the LPN and nursing assistant, in addition to answering a pharmacist’s questions about a patient’s lab results and performing requests made by team members from other services, all while trying to complete the care needed for her patients. The RN is struck by how overwhelmed she feels and questions the LPN and nursing assistant about why they did not help her. The LPN and nursing assistant respond that had the RN asked them to help, they would have, adding, “but we can’t read your mind.” The RN responded, “I didn’t have time ask. Couldn’t you see I was busy?” In the scenario provided above, the RN was the person directing the work of others. However, the RN did not communicate with the LPN and nursing assistant about what needed to be done. In addition, the RN accepted the responsibility to perform additional activities requested by other departments rather than redirecting some of them. This behavior is not uncommon. A study of 170,000 healthcare workers found that RNs often performed inappropriate work or work that others could have done, thus contributing to a loss of the professional components of nursing. Delegation skills can be strengthened when: RNs understand the nurse state practice act Nursing education and nursing service support RNs as they continually expand their knowledge about delegation Simulation exercises using scenarios found in daily practice are used to teach and demonstrate delegation competency Pairing and/or partnering is utilized and supported by the staff schedule and method of patient assignment Delegation is viewed as competency that is based on a skill set and that requires ongoing development. Developing delegation skills is indeed a multifaceted activity. Developing delegation skills begins during pre-licensure nursing education. It is important that educators and organizations provide clinical experiences for nurses to see delegation as a skill set that must be practiced in order for it to be perfected. Developing practice environments that foster nurses’ learning of delegation skills reinforces the authority of all RNs to delegate to LPNs and nursing assistants. As new RNs enter professional practice, they need ongoing support and education to perfect this skill, which ConexusMedstaff provides for our nurses through the Clinical Nurse Educators. Concepts of responsibility, accountability, and authority are integral to each RN’s understanding of professional nursing practice, which includes properly assuming authority for the decisions and outcomes associated with patient care, sharing the process of patient care with other responsible members of the nursing team, and holding all members of the nursing team accountable for their responsibilities. Delegation requires RNs to use critical thinking skills in order to match staff expertise with patient and family needs. Staff relationships also influence the delegation potential and the delegation process. When RNs do not effectively delegate to others, quality of care can be lessened, and valuable resources can be mismanaged. Resources will surely continue to shrink, and care demands will surely continue to rise, thus increasing the risks of inappropriate delegation. Having clarity about what can be delegated helps to define quality professional practice not only for nurses but also for other team members, patients, and families. Reference Weydt, A., (2010). Developing Delegation Skills. OJIN: The Online Journal of Issues in Nursing Vol. 15, No. 2, Manuscript 1.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/09/filipino-nurses-in-the-us-a-brief-history" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmjavmtavmtuvntivodg3l3nodxr0zxjzdg9ja18zodqzntg1mtauanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMjAvMTAvMTUvNTIvODg3L3NodXR0ZXJzdG9ja18zODQzNTg1MTAuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Filipino Nurses in the US: A Brief History</h3>
+						<p>According to the Philippine Overseas Employment Agency, 92,277 nurses left the Philippines in search of opportunities abroad from 2012 to 2017. And it seems the US is a top destination with 2,890 Filipino nurses taking the NCLEX-RN exam from January to March this year, which is up 46 percent compared to the same period in 2018. While Filipinos make up just 1 percent of the US population, they account for over 4 percent of nurses practicing in the US, making them the largest group of internationally educated nurses in the country. US salaries are a huge driver for nurses from the Philippines, with an average RN earning more in a day than they’d make in a month back home, but what other factors made the US a top destination for Filipino nurses? The Beginning After the Spanish-American War in 1898, Filipinos became US nationals, with the US Army training and recruiting them as volunteer auxiliary and contract nurses. Many served in the Philippines to focus on tropical diseases, while some were sent to the US as government-funded scholars, otherwise known as pensionados. Returning pensionados helped to set up and manage the 17 nursing schools that were established in the Philippines from 1903 until 1940. It was this influence that inspired those who completed their education to embark on a career in the US. And, as US nationals, Filipino nurses would travel to the country with little restrictions using their US passports. Pensionado Act of 1903 The Pensionado Act was established and legislated in 1903 to formalize the framework to send pensionados to the US for further education and training. Some of these nurses remained there for employment, and, in 1928, Filipino nurses working in New York established the Philippine Nurses Association. The Association was set-up to promote cultural understanding and streamline professional guidance for nurses. Exchange Visitor Program of 1948 To “combat Soviet propaganda”, the U.S. State Department set up an Exchange Visitor Program, which Filipino nurses took advantage of. In fact, Filipinos accounted for a large percentage of exchange visitors, with many working as nurses or nursing students. Immigration and Nationality Act of 1965 The Immigration and Nationality Act allowed for a new wave of Filipinos. The “occupational immigration” clause in the act was in response to the need for more professionals, specifically in the medical field. It saw thousands of Filipino nurses arrive in the US as complete families, with their spouses and children. Unfortunately, lax regulation of nursing education in the Philippines saw only 15-20 percent of the nurses who immigrated to the US after 1965 passing the state nursing board exams. As a result, in 1977, the Commission on Graduates of Foreign Nursing Schools (CGFNS) was established to prevent the exploitation of foreign nursing graduates. Today’s Immigration Process There are two main parts of immigration for nurses: Credentialing. Ensuring you have the proper qualifications and certifications to begin a career in the USA. This includes taking the NCLEX-RN exam, and an English speaking proficiency test (if applicable). Immigration Visa Process. This is dependent on the US Government. Immigration includes the application for the visa, security checks, and ensuring you meet the appropriate qualification thresholds. There’s never been a better time for Filipino nurses looking to head to the US. The October 2019 Visa Bulletin reveals that the priority date for the Philippines has advanced forward considerably. FINAL ACTION DATES FOR EMPLOYMENT-BASED PREFERENCE CASES Employment-Based Philippines 1st 22APR18 2nd C 3rd 15OCT17 Other Workers 15OCT17 4th C Certain Religious Workers U 5th Non-Regional Center (C5 and T5) C 5th Regional Center (I5 and R5) U Working with Conexus As a leading nurse staffing agency for the US, Conexus sponsors registered nurses from the Philippines on the EB-3 visa, which grants permanent US residency. Our team of experts work closely with each of our nurses to guide them through the entire process, ensuring their dream of working in the US becomes a reality. Meet the Conexus Team! We’re excited to announce we will be in Manila this October for the 10th Philippine Nursing Opportunities Conference Oct 19-20. Our team will be on-hand to answer any queries you may have about life as a nurse in the US, visa requirements, training, and ongoing support in your next career move. Find out more about the event and sign up today.</p>
+					</article>
+				</a>
+            </li>
+
+
+            <li>
+                <a href="/blog/2019/09/LTC-recruiting-foreign-nurses" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmjavmtavmdivmzcvodayl3nodxr0zxjzdg9ja18xmtu0ode2otuwlmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMjAvMTAvMDIvMzcvODAyL3NodXR0ZXJzdG9ja18xMTU0ODE2OTUwLmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Long-Term Care Facilities: Everything You Wanted To Know About Recruiting Foreign Nurses (But Were Afraid To Ask)</h3>
+						<p>A 2019 report from the American Association of Directors of Nursing Services (AADNS) found that approximately 75 percent of nursing directors in long-term care cited staffing shortages as their top challenge. As a result, LTC providers are expanding their search internationally to secure the right talent. In fact, the number of international healthcare workers in the US is projected to continue rising, with 3 million immigrants already accounting for 1 in 4 workers in the field, according to Harvard Medical School. In this blog post, the Conexus team addresses some of the top questions and concerns that US LTC employers have when it comes to recruiting international nurses. How do we know a nurse’s English is going to be good enough to communicate effectively with patients and staff? To be licensed to work in the US, nurses MUST have proficient English skills. After meeting the initial education requirements, some foreign-educated nurses must take and pass the Test of English as a Foreign Language (TOEFL), the Test of English for International Communication (TOEIC) or the International English Language Testing System (IELTS) (depending on their country of origin). Results from these tests are sent directly to the state nursing board, so you can rest assured that the English language skills of foreign nurses you recruit will be up to scratch! Will a foreign nurse understand US medications, values, measurement systems, and patient handling? A lot of this knowledge will be covered in a nurse’s education and preparation for the NCLEX-RN exam. However, it’s the responsibility of the nurse to explore further education opportunities and gather information about the US workplace. That’s why it’s a good idea to find a specialist staffing partner that’s committed to adequately preparing nurses for the US workplace. Conexus is dedicated to the ongoing education of all of our nurses. Before and during their assignment, nurses are supported by their own dedicated Clinical Nurse Educator. Our bespoke Practicing in the US training and education program, followed by our transition to practice program, US Ready, was designed to ensure all of our nurses are ready for life and work in the US. Plus, all Conexus nurses have free and unlimited access to our online training portal and CINAHL continuous learning database worth $5,000. The staff at our facility are stretched. What if we can’t provide an international nurse with the support they need? This a common concern for LTC facilities and a lack of support can negatively impact staff retention. It’s true that if you’re planning to introduce foreign nurses onto your team, you need to ensure they receive adequate support, particularly if they’re new to the US. Once again, you should pay close attention to your staffing agency and how hands-on they are in supporting their nurses. For example, Conexus has a robust support network in place for all of our nurses, with dedicated Operation Managers visiting each community to provide both professional and social support. We also organize regular get-togethers to welcome new nurses and their families, so they can connect with other nurses and quality spend time with their local Conexus team. Is our facility big enough to work with a staffing agency? We guarantee it’ll be big enough to work with Conexus! To put things into perspective, we partner with a broad range of LTC facilities and place an average of 2-5 nurses into each location. We also have the capacity to support multiple sites spread across a state or the wider country. Find Out More Download our guide ‘Hiring the Right Nurses for your Long-Term Care Facility’ to get more information about recruiting international nurses and find out how Conexus can help with the process.</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+            </div>
+            <div class="col-md-3">
+
+
+
+<section id="social-blogs-content">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/09/why-are-so-many-canadian-nurses-moving-to-the-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmtevmtevmtuvmtcvndeyl3nodxr0zxjzdg9ja18xmdkxmtyzotc0lmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMTEvMTEvMTUvMTcvNDEyL3NodXR0ZXJzdG9ja18xMDkxMTYzOTc0LmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Why Are So Many Canadian Nurses Moving To The US?</h3>
+						<p>The number of Canadian nurses moving to the US has continued to increase over the past decade. Given that Canada is facing its own nursing shortage, what exactly is it about the US that’s so appealing to nurses? Although nursing demand is high in Canada, it’s a matter of urgency in the US. In fact, according to the American Association of Colleges of Nursing, 203,700 new RNs are required each year up to 2026. It’s these staggering figures that have led to healthcare organizations in the US to heavily target foreign-educated nursing to help tackle the shortage. Additionally, a survey of Canadian-educated nurses working in North Carolina (one of the five states that employ a large number of Canadian nurses, third only to Texas and Florida, CGFNS 2002), found: Over three-quarters of respondents said they left Canada to obtain full-time RN employment; One third reported leaving due to a desire to travel; Fewer respondents identified improved pay and benefits, climate or geographical location, the opportunity to specialize in a specific field, educational opportunities or targeted incentives, as reasons for leaving Canada. Interestingly, focus groups of respondents revealed deep dissatisfaction with many aspects of the nursing practice in Canada, particularly the undervaluing of the profession. It was reported that Canadian nurses account for over a fifth (20.2 percent) of all foreign nurses working in the US. It’s said that Canadian nurses are particularly in demand because they do not have to tackle language barriers, there’s less of a culture shock, and their education and training is comparable to that of US nurses. Relocating to the US: The Reality The good news is that relocation to the US can be quick and easy for Canadian citizens and international nurses about to get their Canadian citizenship. Once you’ve passed your NCLEX-RN examination and have acquired your visa screen, your temporary work visa (TN visa) will be ready in a matter of weeks. Nurses who completed their nursing degree in a non-English speaking location, like Quebec or somewhere outside of Canada, will be required to take the academic version of the IELTS exam. Working with Conexus Conexus has a dedicated team that has experience mobilizing Candian nurses to work in the US. We sponsor the TN visa process, and if nurses desire to make the move to the US permanent, we’ll sponsor and pay for their green card visa (EB-3). We have contracts with more than 200 healthcare systems across 25 states, so we can offer Canadian nurses some of the most exciting opportunities the US has to offer. Benefits For Canadian Nurses As well as our in-house immigration team taking care of your immigration process sponsoring and covering all filing fees, we will: Pay for your mobilization flight to the USA, with a member of the Conexus team waiting to greet you in the airport arrival lounge; Give you a $1000 USD deployment bonus when you arrive to work in the US; Pay your first 30 days of accommodation in the US. If you’re coming to the US with your family, we’ll make sure we find somewhere that suits you all; Never leave you in the deep end: All of our nurses are enrolled in a 12 weeks’ orientation at their new hospital in the US; Remain on-hand throughout your assignment to offer any support, advice and guidance you need; Assign you with a Clinical Nurse Educator who will tailor an education and development plan for you that’s in line with your needs and aspirations. Get In Touch Find out more about turning your dream of working in the US into a reality with Conexus. Join us at our next Toronto nursing event on 30th October at the Intercontinental Toronto Centre Hotel from 16.00-18.00 - just drop into the hotel for an informal meet and greet with the Conexus team! Alternatively, you can connect with a member of our team below, apply to become a Conexus nurse today, or send us an email at info@conexusmedstaff.com. Form ID:4846</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+            </div>
+            <div class="col-md-4">
+
+
+
+<section id="social-blogs-content">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/10/filipino-nurses-partner-us-journey" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmdcvmdkvmtyvmjevnjuxl3nodxr0zxjzdg9ja18xnzy0mjmyodiuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMDcvMDkvMTYvMjEvNjUxL3NodXR0ZXJzdG9ja18xNzY0MjMyODIuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Why Filipino Nurses Must Pick The Right Partner For Their US Journey</h3>
+						<p class="more">For many nurses working in the Philippines, the US continues to present fantastic job opportunities. In fact, Filipino nurses now account for over 4 percent of nurses practicing in the US, making them the largest group of internationally educated nurses in the country. While a shortage of nurses in the US means an abundance of opportunities, some unscrupulous operators are promising Filipino nurses a new life and career in the US but are failing to deliver. You may have read in the news this month about a case involving 200 nurses who were recruited in the Philippines and sent to work at nursing homes in New York. It was ruled that the nursing homes violated US anti-trafficking law by failing to pay wages and even using threats of serious harm to the nurses. Such a horrifying story can understandably affect confidence for nurses in the Philippines and raise questions about what you need to look for in a staffing partner. Here, the Conexus team provides key areas you need to pay attention to before you commit to a team that promises work in the US. Are they asking you for money up-front? Warning bells should be ringing if a staffing agency asks you, as a nurse, for payment to secure an opportunity in the US. Here at Conexus, we never ask for a fee from our nurses. There’s absolutely no reason you should be paying an agency to find you a role, so be aware of those that ask for one. Who have they worked with? You have the right to ask for case studies and examples of an agency’s work. Find out the names of the healthcare facilities they work with in the US and ask to be put in touch with other nurses they’ve successfully placed. Conexus ensures all of our nurses are comfortable at every stage of the journey. If you want to connect with other nurses to find out about their experience in the US and what it’s like to work with our team, we will put you in direct contact. Do they offer support? This is crucial to ensure that you not only reach the US but also that you’ll be successful in your career once you get there. Conexus is made up of a team of dedicated Clinical Recruiters, Clinical Nurse Educators, Immigration Specialists, and Operation Experts who are dedicated to supporting your journey to the US and throughout your assignment. From day one, we’ll appoint you with a personal Case Manager to handle your application (with all processing costs covered, of course), and our team goes above and beyond to make you feel at home in your new community. Can you meet the team? We can’t emphasize enough the importance of meeting the team that you’ll be working with. If you don’t have the opportunity to meet them, it suggests they don’t have sufficient resources to support you properly. Conexus regularly meets with our nurses, whether that’s in your home country before you embark on your journey, or at your new workplace throughout your assignment.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/10/daca-an-update" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmdevmdgvmzmvmzyvndg2l2rhy2euanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMDEvMDgvMzMvMzYvNDg2L2RhY2EuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>DACA: An Update</h3>
+						<p class="more">September was another busy month in the headlines for the Deferred Action for Childhood Arrivals program. The big news came on the 26th when the University of California filed a brief in United States Supreme Court in San Francisco to challenge President Trump’s decision to rescind the DACA. This filing follows a suit in 2017 by the University’s President Janet Napolitano against the U.S. Department of Homeland Security after Trump’s repeal of the DACA program. The Trump administration announced it planned to phase out DACA, claiming it had been created “without proper statutory authority.” The University filing alleged that such a repeal violated students’ rights. U.S. District Court Judge William Alsup granted an injunction in January 2018 that required the DHS to continue processing DACA renewal applications as the Ninth Circuit Court of Appeals reviewed the case. The legality of the DACA program is not at issue in the current filing, but rather how the government chose to wind it down. Lawyer Theodore B. Olson said the government failed to “consider the costs of its decisions, including loss of work authorization for 700,000 DACA recipients.” The Supreme Court will hear arguments on the latest filing on November 12. As things stand, lower courts have issued two nationwide injunctions forcing the government to continue to allow renewals in the program. A decision siding with the administration could strip protections for nearly 700,000 DACA recipients in a case that will undoubtedly dominate media headlines in the run-up to the 2020 election. Speaking of the election, Senator Bernie Sanders made his thoughts on DACA clear in an interview this month. He said: “On day one, we will restore legal status to 1.8 million young people in the DACA program.” Conexus works with nursing students under DACA, helping them to secure their future career as an RN in the US. Our team continues to visit university and college campuses’ across the US, including recent visits to Arizona and California, to meet with DACA students. Stay tuned to our blog and Facebook page for the latest news on our university partnerships, events, and initiatives for DACA recipients.</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+            </div>
+        </div>
+        <div class="row row-eq-height second-section">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+
+
+
+<section id="social-blogs-body">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/10/calling-all-indian-nurses-with-a-priority-date-between-2006-and-2009" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmjgvmtevmtuvmduvndyxl2fwcgeuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMjgvMTEvMTUvMDUvNDYxL2FwcGEuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article>
+						<h3>Calling All Indian Nurses With A Priority Date Between 2006 and 2009!</h3>
+						<p class="more">The October 2019 Visa Bulletin saw a significant movement in priority dates for Indian nurses. It means that if you have a current priority date between 2006 and 2009 and have been abandoned by a previous sponsor, your dream could STILL be a reality a lot sooner than you might have thought. Considering the historic backlog of Indian registered nurses who already have US visa priority dates, this is excellent news and a significant movement. Why? There are several reasons why priority dates change; however, the US is in critical need of qualified nurses. According to the Bureau of Labor Statistics (2019), employment of registered nurses in the US is projected to grow by 13 percent from 2016 to 2016. This is much faster than the average 7 percent for all other occupations in the US and means that 203,700 new RNs are required each year up to 2026. Whether it’s a fall in nursing student numbers, the current US RN workforce nearing retirement, or the growing number of nurses moving away from the bedside to retrain in alternative roles, there’s a plethora of reasons why US facilities are turning to foreign nurses for their staffing needs. Why Indian Nurses? India is a key area for recruitment for US healthcare facilities due to the level of education, and how established the profession is in the country. In 1908, Trained Nurses of India (TNAI) was formed, followed by the Indian Nursing Council (INC) in 1947, which upgraded the basic educational qualification required for candidates entering the profession. After the INC was established, most of the states in India established their State Nursing Councils (SNC), whose primary function was to conduct examinations and the registration of qualified nurses to permit them to practice. Such movements were responsible for maintaining standards and uniformity in nursing education in India. Your Next Steps With Conexus Our team of healthcare and immigration experts not only help nurses taking their first steps towards a career in the US, but we also work with nurses who have existing priority dates who have been abandoned by their previous sponsor. Once you apply and have all the required documents prepared, you don’t need to worry about a thing when it comes to obtaining your visa, finding a role, mobilizing to the US, and gaining support throughout your assignment. Conexus is made up of a team dedicated Clinical Recruiters, Clinical Nurse Educators, Immigration Specialists, and Operation Experts who are dedicated to supporting your journey to the US and beyond. So, what are you waiting for? If you’re a qualified nurse in India with an existing priority date between 2006 and 2009, Conexus can make your US dream a reality. Apply today or email your questions to info@conexusmedstaff.com.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/10/conexus-medstaff-appoints-new-vice-president-of-operations" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtgvmtqvndkvmdyvndg0l2nhdgh5lnbuzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTgvMTQvNDkvMDYvNDg0L2NhdGh5LnBuZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article>
+						<h3>Conexus Medstaff Appoints New Vice President of Operations</h3>
+						<p class="more">Leading international recruitment firm Conexus Medstaff has appointed a new Vice President amid ambitious plans to expand the company’s footprint across the Americas. Cathy Vollmer joins the business as Vice President of Operations, where she will be responsible for leading the strategic development of partnerships throughout the firm’s impressive client portfolio and business pipeline. The aim of this activity is to grow all areas of Conexus Medstaff’s portfolio of recruitment services and resources across its core sectors, which includes the provision of both International and US nurses. This fast expanding infrastructure has enabled Conexus Medstaff to service multinational clients with staff throughout its territories and to strategically source the very best nursing talent, wherever they are in the world.​ Cathy brings with her vast healthcare experience across both the nursing and recruitment fields, most recently as a Senior Vice President for Favorite Healthcare Staffing. In her most recent role, Cathy spent 10 years increasing sales and profitability, managing branch operations and personnel and enabling business expansion. Speaking about Cathy’s appointment, Andrew Moreton, CEO, said: “We are absolutely thrilled to have Cathy join our team as we continue to grow our international footprint, expand our resources and bring our unique brand of talent services to new clients. “We are building a team with the breadth of experience to help deliver strategic nursing solutions that can end inefficient practices and improve hiring results in these tough times. Our unique approach ensures that the company delivers nursing led leadership. Cathy’s background as a nurse is a great asset to the company in delivering this to some of the leading hospitals and healthcare facilities in the US.” Before her role at Favorite, Cathy held senior operational leadership posts at FASTAFF and StarMed. Cathy is a CSP (certified staffing professional) through ASA, as well as a former Registered Nurse, gaining her Diploma in Nursing from Missouri Baptist School of Nursing, St. Louis, Missouri and Bachelor of Science in Nursing from Maryville University. Cathy remains active in the nursing community as a member of AONL. Additional Press Coverage: SIA: https://www2.staffingindustry.com/Editorial/Daily-News/People-PEO-group-Conexus-Glassdoor-Bullhorn-TSR-51683 DWS Worldwide: https://dwsworldwide.com/people-peo-group-conexus-glassdoor-bullhorn-tsr/</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/10/cost-of-living-canada-vs-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmtgvmtqvntyvmtgvmta1l1vtlwfuzc1dyw5hzglhbi1gbgfnluzlyxr1cmutsw1hz2utntgwedmzmy5qcgcixsxbinailcj0ahvtyiisijm2mhgzntajil1d" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMTgvMTQvNTYvMTgvMTA1L1VTLWFuZC1DYW5hZGlhbi1GbGFnLUZlYXR1cmUtSW1hZ2UtNTgweDMzMy5qcGciXSxbInAiLCJ0aHVtYiIsIjM2MHgzNTAjIl1d" />
+
+					</figure>
+					<article>
+						<h3>Cost of Living: Canada Vs. US</h3>
+						<p class="more">It’s no secret that there’s a shortage of nurses in the US right now. According to the US Bureau of Labor and Statistics, there will be a deficit of approximately 1.1 million nurses by 2020. This means that employment opportunities for nurses are projected to grow at a faster rate than all other occupations from 2016 through 2026. To help overcome these staffing challenges, the US has been actively recruiting and employing foreign nurses for more than 50 years. A 2008 study found that 20.2 percent of foreign nurses that entered the US had emigrated from Canada. US hospitals seek to employ Canadian nurses due to the lack of a language barrier, fewer cultural differences, and a level of education and training that’s comparable to US nurses. So, What’s In It For Canadian Nurses? While US healthcare facilities benefit significantly from hiring nurses from Canada, why should you make the move? Research conducted back in 2006 asked Canadian nurses working in North Carolina why they’d chosen to leave their home country for the US. The reasons included: Opportunity to obtain full-time employment Desire to travel Chance to specialize in a specific field Educational opportunities Improved pay and benefits Indeed, improved pay is a major factor. The US is the currently third-highest paying country in the world for nursing, with the average salary approximately $73,550 (124,590.98 CAD), with the potential to earn more in certain states. However, the benefits of a higher salary can only be realized if the cost of living is comparable to or lower than that in Canada. That’s why the Conexus team has taken three US cities that we place nurses into and compared the living costs with those of Toronto, Ontario, to demonstrate the savings you can make. Toronto, ON Jacksonville, NC Iowa City, IA Lexington, KY Apartment (1 bedroom) in City Centre 2,158.92 C$ 840.45 C$ 1,153.64 C$ 1,133.98 C$ Apartment (1 bedroom) Outside of Centre 1,730.43 C$ 755.49 C$ 894.76 C$ 924.29 C$ Apartment (3 bedrooms) in City Centre 3,560.47 C$ 1,773.75 C$ 2,242.97 C$ 1,783.13 C$ Apartment (3 bedrooms) Outside of Centre 2,538.06 C$ 1,313.89 C$ 1,803.64 C$ 924.29 C$ One-way Ticket (Local Transport) 3.25 C$ 1.64 C$ 1.31 C$ 1.31 C$ Gasoline (1 liter) 1.25 C$ 0.87 C$ 0.91 C$ 0.89 C$ Preschool childcare, Full Day, Private, Monthly for 1 Child 1,532.72 C$ 788.33 C$ 897.82 C$ 870.45 C$ Milk (regular), (1 liter) 2.78 C$ 1.08 C$ 0.91 C$ 0.75 C$ Eggs (regular) (12) 3.49 C$ 2.96 C$ 2.18 C$ 2.15 C$ Local Cheese (1kg) 19.48 C$ 12.75 C$ 13.03 C$ 10.51 C$ Water (1.5 liter bottle) 3.07 C$ 2.50 C$ 2.47 C$ 2.41 C$ McMeal at McDonald’s (or Equivalent Combo Meal) 10.49 C$ 8.86 C$ 9.53 C$ 9.16 C$ Meal for 2 People, Mid-range Restaurant, Three-course 80.00 C$ 66.10 C$ 55.18 C$ 59.12 C$ Additionally, the US dollar is especially strong right now, so, coupled with the low cost of living in the US, you’ll have more money in your pocket every month. The question now is, what are you waiting for? Next Steps If you’re in Toronto from Oct 30 to Nov 1, you can join the Conexus team for a special Meet & Greet at the Intercontinental Toronto Centre Hotel. We’ll be on-hand to answer any queries you may have about life as a nurse in the US, visa requirements, and ongoing support in your next career move. Find out more and register for the event today, or get in touch with Conexus to find out what we can do for your career. Additional Bonus: November 2019-January 2020 Conexus Medstaff are offering an additional $3,000 bonus to nurses that are able to mobilize to the US from Canada across November, December or January. To be eligible for the bonus candidates need to have Canadian citizenship and be able to obtain a visascreen to ensure you can mobilize within this timeframe.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/09/filipino-nurses-in-the-us-a-brief-history" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmjavmtavmtuvntivodg3l3nodxr0zxjzdg9ja18zodqzntg1mtauanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMjAvMTAvMTUvNTIvODg3L3NodXR0ZXJzdG9ja18zODQzNTg1MTAuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article>
+						<h3>Filipino Nurses in the US: A Brief History</h3>
+						<p class="more">According to the Philippine Overseas Employment Agency, 92,277 nurses left the Philippines in search of opportunities abroad from 2012 to 2017. And it seems the US is a top destination with 2,890 Filipino nurses taking the NCLEX-RN exam from January to March this year, which is up 46 percent compared to the same period in 2018. While Filipinos make up just 1 percent of the US population, they account for over 4 percent of nurses practicing in the US, making them the largest group of internationally educated nurses in the country. US salaries are a huge driver for nurses from the Philippines, with an average RN earning more in a day than they’d make in a month back home, but what other factors made the US a top destination for Filipino nurses? The Beginning After the Spanish-American War in 1898, Filipinos became US nationals, with the US Army training and recruiting them as volunteer auxiliary and contract nurses. Many served in the Philippines to focus on tropical diseases, while some were sent to the US as government-funded scholars, otherwise known as pensionados. Returning pensionados helped to set up and manage the 17 nursing schools that were established in the Philippines from 1903 until 1940. It was this influence that inspired those who completed their education to embark on a career in the US. And, as US nationals, Filipino nurses would travel to the country with little restrictions using their US passports. Pensionado Act of 1903 The Pensionado Act was established and legislated in 1903 to formalize the framework to send pensionados to the US for further education and training. Some of these nurses remained there for employment, and, in 1928, Filipino nurses working in New York established the Philippine Nurses Association. The Association was set-up to promote cultural understanding and streamline professional guidance for nurses. Exchange Visitor Program of 1948 To “combat Soviet propaganda”, the U.S. State Department set up an Exchange Visitor Program, which Filipino nurses took advantage of. In fact, Filipinos accounted for a large percentage of exchange visitors, with many working as nurses or nursing students. Immigration and Nationality Act of 1965 The Immigration and Nationality Act allowed for a new wave of Filipinos. The “occupational immigration” clause in the act was in response to the need for more professionals, specifically in the medical field. It saw thousands of Filipino nurses arrive in the US as complete families, with their spouses and children. Unfortunately, lax regulation of nursing education in the Philippines saw only 15-20 percent of the nurses who immigrated to the US after 1965 passing the state nursing board exams. As a result, in 1977, the Commission on Graduates of Foreign Nursing Schools (CGFNS) was established to prevent the exploitation of foreign nursing graduates. Today’s Immigration Process There are two main parts of immigration for nurses: Credentialing. Ensuring you have the proper qualifications and certifications to begin a career in the USA. This includes taking the NCLEX-RN exam, and an English speaking proficiency test (if applicable). Immigration Visa Process. This is dependent on the US Government. Immigration includes the application for the visa, security checks, and ensuring you meet the appropriate qualification thresholds. There’s never been a better time for Filipino nurses looking to head to the US. The October 2019 Visa Bulletin reveals that the priority date for the Philippines has advanced forward considerably. FINAL ACTION DATES FOR EMPLOYMENT-BASED PREFERENCE CASES Employment-Based Philippines 1st 22APR18 2nd C 3rd 15OCT17 Other Workers 15OCT17 4th C Certain Religious Workers U 5th Non-Regional Center (C5 and T5) C 5th Regional Center (I5 and R5) U Working with Conexus As a leading nurse staffing agency for the US, Conexus sponsors registered nurses from the Philippines on the EB-3 visa, which grants permanent US residency. Our team of experts work closely with each of our nurses to guide them through the entire process, ensuring their dream of working in the US becomes a reality. Meet the Conexus Team! We’re excited to announce we will be in Manila this October for the 10th Philippine Nursing Opportunities Conference Oct 19-20. Our team will be on-hand to answer any queries you may have about life as a nurse in the US, visa requirements, training, and ongoing support in your next career move. Find out more about the event and sign up today.</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+                    </div>
+                    <div class="col-md-12">
+
+
+
+<section id="social-blogs-body" class="section-body">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/09/LTC-recruiting-foreign-nurses" class="block-link">
+                    <article>
+						<h3>in the news</h3>
+						<p class="more">A 2019 report from the American Association of Directors of Nursing Services (AADNS) found that approximately 75 percent of nursing directors in long-term care cited staffing shortages as their top challenge. As a result, LTC providers are expanding their search internationally to secure the right talent. In fact, the number of international healthcare workers in the US is projected to continue rising, with 3 million immigrants already accounting for 1 in 4 workers in the field, according to Harvard Medical School. In this blog post, the Conexus team addresses some of the top questions and concerns that US LTC employers have when it comes to recruiting international nurses. How do we know a nurse’s English is going to be good enough to communicate effectively with patients and staff? To be licensed to work in the US, nurses MUST have proficient English skills. After meeting the initial education requirements, some foreign-educated nurses must take and pass the Test of English as a Foreign Language (TOEFL), the Test of English for International Communication (TOEIC) or the International English Language Testing System (IELTS) (depending on their country of origin). Results from these tests are sent directly to the state nursing board, so you can rest assured that the English language skills of foreign nurses you recruit will be up to scratch! Will a foreign nurse understand US medications, values, measurement systems, and patient handling? A lot of this knowledge will be covered in a nurse’s education and preparation for the NCLEX-RN exam. However, it’s the responsibility of the nurse to explore further education opportunities and gather information about the US workplace. That’s why it’s a good idea to find a specialist staffing partner that’s committed to adequately preparing nurses for the US workplace. Conexus is dedicated to the ongoing education of all of our nurses. Before and during their assignment, nurses are supported by their own dedicated Clinical Nurse Educator. Our bespoke Practicing in the US training and education program, followed by our transition to practice program, US Ready, was designed to ensure all of our nurses are ready for life and work in the US. Plus, all Conexus nurses have free and unlimited access to our online training portal and CINAHL continuous learning database worth $5,000. The staff at our facility are stretched. What if we can’t provide an international nurse with the support they need? This a common concern for LTC facilities and a lack of support can negatively impact staff retention. It’s true that if you’re planning to introduce foreign nurses onto your team, you need to ensure they receive adequate support, particularly if they’re new to the US. Once again, you should pay close attention to your staffing agency and how hands-on they are in supporting their nurses. For example, Conexus has a robust support network in place for all of our nurses, with dedicated Operation Managers visiting each community to provide both professional and social support. We also organize regular get-togethers to welcome new nurses and their families, so they can connect with other nurses and quality spend time with their local Conexus team. Is our facility big enough to work with a staffing agency? We guarantee it’ll be big enough to work with Conexus! To put things into perspective, we partner with a broad range of LTC facilities and place an average of 2-5 nurses into each location. We also have the capacity to support multiple sites spread across a state or the wider country. Find Out More Download our guide ‘Hiring the Right Nurses for your Long-Term Care Facility’ to get more information about recruiting international nurses and find out how Conexus can help with the process.</p>
+					</article>
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmjavmtavmdivmzcvodayl3nodxr0zxjzdg9ja18xmtu0ode2otuwlmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMjAvMTAvMDIvMzcvODAyL3NodXR0ZXJzdG9ja18xMTU0ODE2OTUwLmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/08/ripped-from-the-headlines-from-a-1-dollars-dot-4million-re-election-donation-to-baby-joy-for-36-nurses-at-the-same-hospital" class="block-link">
+                    <article>
+						<h3>in the news</h3>
+						<p class="more">In our continuing Ripped from the Headlines series of nursing industry news, we take a look at: Why there’s a shortage of good nurses and how reports of staff shortages don’t reflect the bigger picture (The Nation); How much the US healthcare sector has donated to 202 presidential candidates (Business Insider); And, the amazing story of 36 nurses from one hospital who are or have been pregnant this year! (USA Today). So, grab yourself a coffee and catch up on the latest nursing and healthcare headlines delivered by your Conexus team. There Is No ‘Nursing Shortage’, There’s Just a Good Nursing Job Shortage This headline splashed across The Nation in August stated that reports of nursing shortages are only half of the real story. It claims that healthcare needs to rethink its approach when it comes to maintaining a high standard of candidates entering the profession. It states: “The American Nurses Association estimates that, from 2018 through 2022, registered nursing will have more job openings nationwide than any other profession. But there is a steady influx of nurses entering the field. When there are staffing problems, advocates say the real problem is that employers just aren’t willing to fund a fully staffed workforce.” The article also discusses changes that should be made across state healthcare policies, such as implementing the “staff-patient ratios” that were pioneered in the state of California in 2004. Donald Trump Gets $1.4Million From Healthcare Donations For His Re-Election Campaign This month, Business Insider revealed how healthcare has become a prominent part of the 2020 presidential campaign. Its data shows that the sector has donated $5million to prospective presidential candidates in the lead up to the 2020 election. From Big Pharma to smaller contributors, the campaign race is a multimillion-dollar effort with current Republican President Donald Trump topping the list of donations from healthcare with $1.4million. What does this mean to you? The article also details the claims each candidate has made on healthcare reform, and what it could mean for the future of healthcare in the US. Definitely worth a read. Baby Boom For Nurses At One Missouri Neonatal Department! And finally...36 Neonatal Intensive Care Unit (NICU) nurses from one hospital have been or are pregnant in 2019 alone! The news has gone viral and has been widely reported in a range of outlets including USA Today. All of the nurses work on the NICU at Children’s Mercy in Kansas City, Missouri. Staff have claimed it’s brought the nurses closer together and allowed them to empathise more personally with pregnant patients. One of the nurses, Allison Ronco, 32, said: “Patients joke not to drink the water in this place unless you want to get pregnant. We definitely truly are all really good friends. We are all raising these babies together.” The heartwarming news goes to show how nurses play such an impactful role in people’s lives during key milestones. Like reading Ripped from the Headlines? Stay tuned to our blog for more or re-visit the archive today.</p>
+					</article>
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdgvmjavmtuvndqvmdcvnza2l2jhynktymlydggtym9ybi03mzq1ndeuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDgvMjAvMTUvNDQvMDcvNzA2L2JhYnktYmlydGgtYm9ybi03MzQ1NDEuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/07/ripped-from-the-headlines-able-resourceful-rns" class="block-link">
+                    <article>
+						<h3>in the news</h3>
+						<p class="more">Time for yet another blog post from our continuing series of nursing industry news pieces we’ve “ripped from headlines”, a la Law & Order. It’s a great compendium of nursing topics making the rounds on Google News. We invite you to read our previous installments in this series here. In the international healthcare recruitment system, competent nursing is represented by two separate yet equally important groups. The quality foreign nurses we place, and the American healthcare providers who turn to Conexus Medstaff for their services. These are their stories. (Duh-DUH!). Monster: RNs among most popular jobs posted A legacy job post board in the US, Monster has been overrun with roles that are hard to fill among American applicants. Including nurses, as reported by Fox Business: Monster compiled a list of the top 10 jobs that have been posted on its website, and while several of the positions are technology-related, some roles are completely out of that field… Many employers are also looking for registered nurses, who make an average of $70,000 a year. The position has a 15 percent job growth over the course of a decade. Here’s a bit more insight on that 15 percent job growth. We’ve reported before about the growing need for qualified nurses throughout the US. This is due to in part to two critical factors. Aging workforce. Healthcare practitioners are increasingly approaching retirement age. Next generation shortfall. Statistics show modern students aren’t following the educational path to becoming a nurse. And as we’ve revealed in our free Guide to Delivering Healthcare Talent to the USA, healthcare practitioners are increasingly cosmopolitan in America. Healthcare practitioners from abroad went up 40% in the decade before 2015. 15% of all registered nurses are international and growing. The void in nursing talent is real, but many qualified candidates to ease the strain on overstretched hospitals, hospices, and HMOs. Clients and candidates alike should take heart. Filipino Nurses and the U.S. You’ll recall our recent insights into the new EB-3 visa update and its favorability for nurses from the Philippines. As a follow-up, a study of nurses from the South Pacific archipelago reveals a rather remarkable history. Here’s a truly incredible read from Anne Brice (and podcast listen to Cal-Berkeley professor Catherine Ceniza Choy) on the legacy of nurses from the Philippines working in the US. It’s one that started thanks to nothing more than Choy’s childhood in New York City, and the simple question Why? Read below from the Berkeley News. “(Choy’s) mom was an immigrant from the Philippines. And when they’d go to Filipino events, it was common to see a lot of nurses. 'I think when I was growing up, it was just part of the familiar landscape of home,' Choy says, 'and what it was like to be in New York City. I didn’t really question it as a child. It just seemed natural or normal to me.” Years later, as a graduate student at UCLA, Choy began to wonder: Why were there so many Filipino nurses in the U.S..? As it turns out, Cold War federal government programs that intended to curb the growth of Communism internationally played a central role. The result? Communities of Filipino nurses and their families in the US. “The Exchange Visitor Program was created in 1948 to bring people from other countries to the U.S.., where they would work and study for two years, and learn about American culture…Filipino exchange nurses and other health care workers soon began to dominate the program. But it still didn’t answer: why the Philippines? Please read or listen to it. You’ll be glad we didn’t give away the answer, as it’s worth the investment of time. More with less? Here’s how nurses and healthcare providers really cope. Nurses of all competencies have to (and do) make do with less, be it supplies or critical equipment. Hospice nurse Theresa Brown spared no words in a well-written opinion piece for CNN.com last week talking about the culture of maximizing resources. We’ll offer a slight correction afterward. From cnn.com: “When I worked at a teaching hospital in the UPMC system in Pittsburgh, my hospital floor usually had two or three of these devices, and though we nurses begged for more, we were always told the money wasn't "there" in the budget, despite our hospital system's obvious wealth (operating revenues of $14 billion in the first nine months of 2018). This is the paradox of modern health care: The clinical space where patient care occurs operates on a model of scarcity, while the back office of CEOs, pharmaceutical companies, and large hospital systems function in a world of plenty. I have been, at times, desperate for a pulse-ox. Watching someone fight for air evokes a primal fear in anyone, and it's important as a caregiver to know that (a) patient's oxygen level. Having to hurry around the floor asking where a pulse-ox device is compounding the stress and delays care when the patient struggling to breathe cannot wait." There's a lot to unpack here. No doubt, such horrors as the ones described by Brown here may occur on a given day. But a recent Kaufman Hall report found that supply expense per discharge grew 7% year-on-year in April. So while it's true that doing without may be a required job skill for nurses, how much they might do without from system to system varies. Secondly, Brown uses the word “revenue” instead of “profit”, which might’ve helped her drive home the “have and have-not” notion. In this instance, it’s misleading: hospitals - like any industry - often have to find the most affordable ways to deliver top-notch healthcare. Profitability is not a given for hospitals, according to Kaufman Hall Managing Director Jim Blake. As told to Healthcare Finance’s Jeff Legasse: "'Overall, the first half of the year (2018) was a very bad half...A lot of bad performance overall in various regions, by profitability, by volumes. 'Things turned around during the middle of the year -- June, July, and August were profitable months -- but nothing that would set the world afire. The industry as a whole was eking it out during that time.'" Cost-cutting measures occur in all sectors, and healthcare is no different. Finding the fine line (urban vs rural, rich vs poor, resourceful vs resourceless) is relative in addressing Brown’s points. It’s not to minimize them by any stretch; rather, it’s operative to wear the shoes of both management and practitioners when analyzing this complex issue. Above all, Conexus Medstaff encourages nurses to be resourceful, and healthcare firms to consider the best options available.</p>
+					</article>
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdcvmdivmtqvntyvntmvnjqxl0nnic0gd2vic2l0zsbiywnrz3jvdw5kcyaomskuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDcvMDIvMTQvNTYvNTMvNjQxL0NNIC0gd2Vic2l0ZSBiYWNrZ3JvdW5kcyAoMSkuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+				</a>
+            </li>
+
+    </ul>
+</section>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+
+
+<section id="social-blogs-content">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/09/ripped-from-the-headlines-a-study-into-ltc-workers-transgender-patient-simulation-and-a-selfless-wisconsin-nurse" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmtyvmdkvntkvndkvodawl3nodxr0zxjzdg9ja18xnzc4odk0odquanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMTYvMDkvNTkvNDkvODAwL3NodXR0ZXJzdG9ja18xNzc4ODk0ODQuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Ripped From The Headlines: A study into LTC workers, transgender patient simulation, and a selfless Wisconsin nurse!</h3>
+						<p class="more">We’re back with another edition of Ripped From The Headlines where the Conexus team brings you all of the latest nursing and healthcare news from the US. This time, we look at a study into Maine’s shortage of long-term care (LTC) workers, a ground-breaking transgender patient simulation, and one Wisconsin nurse who truly went above and beyond her job description! Commission Begins Studying Shortage of LTC Workers in Maine A bill was passed by the Legislature to create a 15-member panel to explore how to solve workforce shortages and other worker-related issues in LTC in Maine. 23 percent of Maine’s population is older than 65, with Mainers aged 18 to 24 dropping by 8 percent from 2010 to 2018. The state commission will explore ways to expand Maine’s LTC workforce and strengthen an elder-care system that’s facing increased demand from an aging population. It’s not the first time the tipping point in Maine’s LTC has featured in the press with the Washington Post reporting the issue in August. The commission will meet throughout the fall and early winter before bringing a set of recommendations to the Legislature for review in January 2020. Transgender Patient Simulation Debuts in UMN Nursing School Students at the University of Minnesota School of Nursing will participate in a new transgender patient simulation this fall to learn how to better care for transgender patients. The simulation will take place in September and will teach students how care can be different for transgender or nonbinary patients. The teachers, who will be transgender or nonbinary themselves, will take on the role of the patient and assessed by students. The students will learn how to properly address each patient, refer to their body parts and be respectful while asking questions. The simulation is funded by a $1,000 grant from the University’s Institute for Diversity, Equity, and Advocacy. ICU nurse donates part of liver to save 8-year-old Wisconsin boy’s life Cami Loritz, an ICU nurse at Froedtert Hospital in Wauwatosa, Wisconsin, donated part of her liver for a transplant that saved an 8-year-old boy’s life this summer. Brayden Auten got sick in April and doctors at the Milwaukee Children’s Hospital said he had an aggressive virus that was attacking his liver. Desperate to find a donor, Brayden’s family posted his story on Facebook and were flooded with responses. Cami got in touch and proved to be a perfect match for Brayden. “What she did was completely selfless, and she saved his life, plain and simple,” Brayden’s mother Ruth Auten said. Brayden returned home in July and is now gearing up to go back to school. Like reading Ripped from the Headlines? Stay tuned to our blog for more or re-visit the archive today.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/09/effective-retention-strategies-for-long-term-care" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmtyvmtavmdyvmdivnjm4l3nodxr0zxjzdg9ja182mdk0mjm0njeuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMTYvMTAvMDYvMDIvNjM4L3NodXR0ZXJzdG9ja182MDk0MjM0NjEuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Effective Retention Strategies For Long-Term Care</h3>
+						<p class="more">Whether a long-term care (LTC) provider operates a multi-site chain governed by a board of directors or is the sole proprietor of a single facility, retention of nurses can be a challenge. While LTC organizations are committed to supporting their nursing staff, they don’t always possess the time and resources to do so, especially when compared with acute-care facilities. Due to their size, staffing levels and tendency to hire multiple nurses at once, acute-care facilities can offer nurse residency programs. These programs provide training and mentoring, which can be highly effective at boosting the confidence of new starters, developing skills, and, crucially, improving RN retention rates. In comparison, LTC facilities don’t have doctors or specialists, so the majority of the care responsibility is placed on the shoulders of nurses. In this blog post, the Conexus team looks at some of the ways that LTC facilities can improve nursing retention levels. Orientation & Onboarding Strong orientation and onboarding programs can make a significant positive impact on nursing staff retention. Some elements to consider include: Getting buy-in from all levels, from HR to the facility’s director, on what’s required to prepare nurses for work in that environment Allow new nurses to start with a slightly lower workload that gradually increases over an agreed period Partner new starters with an experienced nurse mentor who will offer support, guidance, and deliver feedback on performance Encourage an open dialogue between new starters and senior staff which allows for questions without judgment. Leading By Example The behavior of leadership figures is a significant driver when it comes to staff commitment and retention. Effective leaders in healthcare demonstrate the following traits/actions: Emphasis on continuous education for staff A focus on employee needs and aspirations Proactivity Appreciation and respect for staff at all levels Open, honest and direct communication. Establishing A Close-Knit Team A sense of connectedness within a team can be a crucial driving factor in staff retention. Working on creating a family atmosphere in the workplace, where everyone is respected and has a connection with one another, will pay off in the long-term. As well as facilitating staff initiatives outside of the workplace to bolster relationships, it helps if an employee can envisage a future with the organization. A commitment to training, mentoring, career development, and employee empowerment can go a long way in helping to achieve this. Working With A Staffing Partner A staffing partner with experience placing LTC nurses can offer additional support that a facility may not be able to facilitate. For example, Conexus provides in-person support to nurses in two main ways: Ongoing education and development through a dedicated Clinical Nurse Educator to ensure nurses are well-equipped in their role and have the educational tools they need to continue developing and growing in their career. Personal support through our Operation Managers who help each nurse settle into a new city or state, whether that’s by sourcing the right accommodation, scoping out transport options, or finding schools for their children. We work with a wide range of LTC organizations across the US to provide staffing solutions that suit their exact needs, whether that’s placing 2-5 nurses in a single location or staffing multiple facilities that span a state or the country. Find Out More Download our guide ‘Hiring the Right Nurses for your Long-Term Care Facility’ to get more information about recruiting international nurses and find out how Conexus can help with the process.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/09/why-are-so-many-canadian-nurses-moving-to-the-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmtevmtevmtuvmtcvndeyl3nodxr0zxjzdg9ja18xmdkxmtyzotc0lmpwzyjdlfsiccisinrodw1iiiwimzywedm1mcmixv0" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMTEvMTEvMTUvMTcvNDEyL3NodXR0ZXJzdG9ja18xMDkxMTYzOTc0LmpwZyJdLFsicCIsInRodW1iIiwiMzYweDM1MCMiXV0" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Why Are So Many Canadian Nurses Moving To The US?</h3>
+						<p class="more">The number of Canadian nurses moving to the US has continued to increase over the past decade. Given that Canada is facing its own nursing shortage, what exactly is it about the US that’s so appealing to nurses? Although nursing demand is high in Canada, it’s a matter of urgency in the US. In fact, according to the American Association of Colleges of Nursing, 203,700 new RNs are required each year up to 2026. It’s these staggering figures that have led to healthcare organizations in the US to heavily target foreign-educated nursing to help tackle the shortage. Additionally, a survey of Canadian-educated nurses working in North Carolina (one of the five states that employ a large number of Canadian nurses, third only to Texas and Florida, CGFNS 2002), found: Over three-quarters of respondents said they left Canada to obtain full-time RN employment; One third reported leaving due to a desire to travel; Fewer respondents identified improved pay and benefits, climate or geographical location, the opportunity to specialize in a specific field, educational opportunities or targeted incentives, as reasons for leaving Canada. Interestingly, focus groups of respondents revealed deep dissatisfaction with many aspects of the nursing practice in Canada, particularly the undervaluing of the profession. It was reported that Canadian nurses account for over a fifth (20.2 percent) of all foreign nurses working in the US. It’s said that Canadian nurses are particularly in demand because they do not have to tackle language barriers, there’s less of a culture shock, and their education and training is comparable to that of US nurses. Relocating to the US: The Reality The good news is that relocation to the US can be quick and easy for Canadian citizens and international nurses about to get their Canadian citizenship. Once you’ve passed your NCLEX-RN examination and have acquired your visa screen, your temporary work visa (TN visa) will be ready in a matter of weeks. Nurses who completed their nursing degree in a non-English speaking location, like Quebec or somewhere outside of Canada, will be required to take the academic version of the IELTS exam. Working with Conexus Conexus has a dedicated team that has experience mobilizing Candian nurses to work in the US. We sponsor the TN visa process, and if nurses desire to make the move to the US permanent, we’ll sponsor and pay for their green card visa (EB-3). We have contracts with more than 200 healthcare systems across 25 states, so we can offer Canadian nurses some of the most exciting opportunities the US has to offer. Benefits For Canadian Nurses As well as our in-house immigration team taking care of your immigration process sponsoring and covering all filing fees, we will: Pay for your mobilization flight to the USA, with a member of the Conexus team waiting to greet you in the airport arrival lounge; Give you a $1000 USD deployment bonus when you arrive to work in the US; Pay your first 30 days of accommodation in the US. If you’re coming to the US with your family, we’ll make sure we find somewhere that suits you all; Never leave you in the deep end: All of our nurses are enrolled in a 12 weeks’ orientation at their new hospital in the US; Remain on-hand throughout your assignment to offer any support, advice and guidance you need; Assign you with a Clinical Nurse Educator who will tailor an education and development plan for you that’s in line with your needs and aspirations. Get In Touch Find out more about turning your dream of working in the US into a reality with Conexus. Join us at our next Toronto nursing event on 30th October at the Intercontinental Toronto Centre Hotel from 16.00-18.00 - just drop into the hotel for an informal meet and greet with the Conexus team! Alternatively, you can connect with a member of our team below, apply to become a Conexus nurse today, or send us an email at info@conexusmedstaff.com. Form ID:4846</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+            </div>
+            <div class="col-md-3">
+
+
+
+<section id="social-blogs-content">
+    <ul class="format  slider ">
+
+            <li>
+                <a href="/blog/2019/10/calling-all-indian-nurses-with-a-priority-date-between-2006-and-2009" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmtavmjgvmtevmtuvmduvndyxl2fwcgeuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMTAvMjgvMTEvMTUvMDUvNDYxL2FwcGEuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Calling All Indian Nurses With A Priority Date Between 2006 and 2009!</h3>
+						<p class="more">The October 2019 Visa Bulletin saw a significant movement in priority dates for Indian nurses. It means that if you have a current priority date between 2006 and 2009 and have been abandoned by a previous sponsor, your dream could STILL be a reality a lot sooner than you might have thought. Considering the historic backlog of Indian registered nurses who already have US visa priority dates, this is excellent news and a significant movement. Why? There are several reasons why priority dates change; however, the US is in critical need of qualified nurses. According to the Bureau of Labor Statistics (2019), employment of registered nurses in the US is projected to grow by 13 percent from 2016 to 2016. This is much faster than the average 7 percent for all other occupations in the US and means that 203,700 new RNs are required each year up to 2026. Whether it’s a fall in nursing student numbers, the current US RN workforce nearing retirement, or the growing number of nurses moving away from the bedside to retrain in alternative roles, there’s a plethora of reasons why US facilities are turning to foreign nurses for their staffing needs. Why Indian Nurses? India is a key area for recruitment for US healthcare facilities due to the level of education, and how established the profession is in the country. In 1908, Trained Nurses of India (TNAI) was formed, followed by the Indian Nursing Council (INC) in 1947, which upgraded the basic educational qualification required for candidates entering the profession. After the INC was established, most of the states in India established their State Nursing Councils (SNC), whose primary function was to conduct examinations and the registration of qualified nurses to permit them to practice. Such movements were responsible for maintaining standards and uniformity in nursing education in India. Your Next Steps With Conexus Our team of healthcare and immigration experts not only help nurses taking their first steps towards a career in the US, but we also work with nurses who have existing priority dates who have been abandoned by their previous sponsor. Once you apply and have all the required documents prepared, you don’t need to worry about a thing when it comes to obtaining your visa, finding a role, mobilizing to the US, and gaining support throughout your assignment. Conexus is made up of a team dedicated Clinical Recruiters, Clinical Nurse Educators, Immigration Specialists, and Operation Experts who are dedicated to supporting your journey to the US and beyond. So, what are you waiting for? If you’re a qualified nurse in India with an existing priority date between 2006 and 2009, Conexus can make your US dream a reality. Apply today or email your questions to info@conexusmedstaff.com.</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2019/09/nurses-in-the-middle-east-considering-moving-to-the-us" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtkvmdkvmdmvmtavmzivmtevnda5l3nodxr0zxjzdg9ja182njyymdaxmjiuanbnil0swyjwiiwidgh1bwiilciznjb4mzuwiyjdxq" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTkvMDkvMDMvMTAvMzIvMTEvNDA5L3NodXR0ZXJzdG9ja182NjYyMDAxMjIuanBnIl0sWyJwIiwidGh1bWIiLCIzNjB4MzUwIyJdXQ" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>Nurses In The Middle East: Considering Moving To The US?</h3>
+						<p class="more">The current shortage of nurses in the US means there are opportunities for international registered nurses, especially those based in the United Arab Emirates (UAE) and throughout the Middle East. What’s The Situation In The US? An aging population, coupled with the average age of a US RN presently at 58 years old, means international nurses are in high demand. In fact, the RN workforce in the US was 2.9 million in 2016 and is expected to increase by 438,100 in 2026 to take RNs to 3.4 million. This means an additional 203,700 new RNs are needed each year up to 2026 to fill both newly created roles and replace retiring nurses. Why Are Nurses From The Middle East Sought After? The Middle East is known across the globe for its exacting standards of education and training in healthcare, meaning professionals from here are in high demand. Additionally, US hospitals are particularly interested in hiring Middle Eastern nurses due to English being a widely spoken language across the region. What’s In It For You? There are several reasons why a new life and career in the US could be an excellent option for nurses from the Middle East, including: Career Development. Due to increasing nursing shortages, nurses in the US are guaranteed job security for years to come. Additionally, high numbers of nurses entering retirement age mean there’s ample scope to progress your career. Excellent Rate of Pay. According to the U.S. News and World Report, Registered Nurses in the US in 2016 made an average salary of $68,450, making it one of the highest paying countries in the world for nurses. Benefits & Taxes. Declining oil prices in the Middle East in recent years have seen employers looking at areas where they can cut costs and boost revenue. As a result, there have been cuts in benefits, and income taxes are reportedly just around the corner. Standard of Living. Nurses in the US have access to excellent public services and a high standard of living. For example, the cost of renting a house in the US is a lot lower compared to the cost of renting an apartment in the UAE, presenting the opportunity to buy your own home in the future. Permanent Residency Visa & Sponsorship of Family. In the Middle East, you can only receive a temporary working visa for a fixed number of years. In some countries like the UAE both males and females are allowed to sponsor their dependents, but in countries like Saudi Arabia women are not permitted to sponsor dependents. In the US, the green card visa enables nurses to remain in the US indefinitely, with no gender discrimination when it comes to sponsoring dependents. Greater Flexibility. Some countries in the Middle East require employees to obtain an exit visa from their employer/sponsor to be able to exit the country, but this level of control doesn’t exist in the US. Family-Friendly. Everyone in the US is entitled to free education, which means your children or any born during your time there will have free access to some of the best schooling in the world. More Leisure Time. US nurses typically work a 40-hour week, compared to the mandatory 48 hour week that RN's are expected to work in the UAE. Diversity. Every culture, language, and custom can be found in the US, making living and working there a vibrant and exciting experience. Why Work With Conexus? Conexus Medstaff has supported many nurses from the Middle East in making the transition to life and work in the US, including processing the essential documentation required to make it a reality. We cover the cost of full sponsorship and visa applications AND the first 30 days of your accommodation in the US. Additionally, our team ensures you’re ready for American life and working practices by staying by your side before and during your assignment. Our Practicing in the US training and education program, followed by our transition to practice program, US Ready, were designed to improve your knowledge of nursing in the US. Plus, our training programs are delivered in conjunction with free and unlimited access to our education and training portal where you tap into the CINAHL continuous learning database worth $5,000. So what are you waiting for? If you want to swap the UAE for the US, get in touch with your local Conexus team or apply now. Alternatively, why not come and meet the team at our recruitment drives in Abu Dhabi and Dubai 13th - 18th November? Register your interest today using the form below or visit our event pages for more information. Form ID:4810</p>
+					</article>
+				</a>
+            </li>
+
+            <li>
+                <a href="/blog/2018/09/visa-processing" class="block-link">
+					<figure class="responsive">
+
+							<img alt="W1siziisijiwmtgvmdkvmdqvmtivntgvmjuvnzavc2h1dhrlcnn0b2nrxzi5odywntk0nc5qcgcixsxbinailcj0ahvtyiisijm2mhgzntajil1d" src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsIjIwMTgvMDkvMDQvMTIvNTgvMjUvNzAvc2h1dHRlcnN0b2NrXzI5ODYwNTk0NC5qcGciXSxbInAiLCJ0aHVtYiIsIjM2MHgzNTAjIl1d" />
+
+					</figure>
+					<article class="fg-text fg-bottom">
+						<h3>All you need to know about Visa Processing</h3>
+						<p class="more">There's no need to feel in the dark about your Visa and Immigration application. We will process and pay for your immigration visa, so you wont need to worry about a thing. Once you have successfully passed our application process, our friendly, in-house immigration team, lead by our expert Immigration Manager, Veronica Sanchez, will handle the complete application for you, for no fee! Our in-house team of immigration experts are available around the clock to guide and support all of our international healthcare professionals through the visa and immigration process. From day one you will be appointed your personal Immigration Support Officer who will tell you exactly what you will need to provide to us and keep you updated and informed on your application through every step, from providing you information to getting you ready for your Embassy Interview. We will even work with you to ensure you have an active license for when you arrive in the USA meaning there will be no delays in starting your new dream job in America. 'Just trust the process and persevere', ' After I signed the contract, they kept on updating me with the process and were able to answer my queries all the time', 'The whole Conexus team were there to support me from step 1.' Don't just take it from us, hear it from our candidates. If there's one thing you can expect from us here at Conexus Medstaff it's honesty. We know that the visa application and emmigration journey can seem long and confusing, especially when you are so excited about finally achieving your American Dream in the USA. That's why our aim is to keep you as updated as possible on your visa and imigration application. After all, this is your American adventure! Our Immigration team use state-of-the-art, award winning Case Management system, LawLogix, which allows us to track each of our candidates immigration cases at the click of a button. LawLogix also allows our candidates to check their own status too. Regardless of what international healthcare professional you are, there will be a visa that is perfect for you! So what visa will we sponsor you on; the EB-3, the EB-2 or even the TN? Even if you are currently on a temporary visa in the USA like the F1, OPT, J1 or another visa that is eligible for Adjustment of Status (AOS), we will still sponsor you on a more permanant visa so that you can remain living and working in the United States even after you have completed your assignment with us. To find out what visa is right for you why not explore our Learning Hub? or select the most relevant to you below. Can't find what you're looking for or want a consultation with our Recruitment and Immigration team? Then get in touch and we will point you in the right direction. Visa information for Canadian Citizens Visa information for Mexican Citizens Visa information for Filipino Nationals Visa information for Chinese Nationals Visa information for Indian Nationals Visa information for the rest of the world</p>
+					</article>
+				</a>
+            </li>
+
+    </ul>
+</section>
+            </div>
+        </div>
+    </div>
+    <footer class="section-footer">
+        <a href="/blog" class="button">View all</a>
+    </footer>
+</section>
+
+
+<section id="social-stream" class="social-stream section  ">
+    <div class="container">
+		<div class="row-eq-height">
+			<aside class="col-md-6">
+				<h2>Social Stream</h2>
+			</aside>
+			<nav class="col-md-6 clearfix">
+				<i class="stream-btn-facebook fa fa-facebook fa-fw fa-3x active"></i>
+
+			</nav>
+		</div>
+	</div>
+	<div class="feed-wrapper">
+		<div id="feed-facebook" class="clearfix container-fluid feed"></div>
+
+	</div>
+
+	<script>
+	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? true : false;
+	if(!isMobile) {
+		function addHTML(feed, button, text){
+			if(text != '') {
+				document.getElementById(feed).innerHTML = text;
+			} else {
+		    	$('#'+feed).hide();
+		    	$('.'+button).hide();
+			}
+		}
+	    function twitterFeed(dataWeGotViaJsonp){
+	        var text = '';
+	        var count = 0;
+	        var len = 12;
+	        var feed = 'feed-twitter';
+	        var button = 'stream-btn-twitter';
+	        var img;
+	        for(var i=0;i<len;i++){
+				entry = dataWeGotViaJsonp[i];
+				if (entry != null) {
+					if(entry['picture'] != '') {
+						img = '<img src="'+ entry['picture'] +'"/>';
+					} else {
+						img = '';
+					}
+			        if(entry['message'] != '') {
+					    text +=     '<div class="twitblock wrapper clearfix lazyload block">' +
+									'<article><a href="' + entry['link'] + '" target="_blank">' +
+									'<i class="fa fa-twitter fa-3x"></i>' + img +
+									'<p>"' + entry['message'] + '"</p>' +
+									'<span>' + timeSince(entry['created_at']) + '</span>' +
+									'</a></article>' +
+									'</div>';
+			        }
+				}
+			}
+			addHTML(feed, button, text);
+	    };
+	    function facebookFeed(dataWeGotViaJsonp){
+	        var text = '';
+	        var count = 0;
+	        var len = 12;
+	        var feed = 'feed-facebook';
+	        var button = 'stream-btn-facebook';
+	        for(var i=0;i<len;i++){
+				entry = dataWeGotViaJsonp[i];
+				if (entry != null) {
+			        if(entry['message'] != '') {
+					    text +=     '<div class="fbblock wrapper clearfix lazyload block">' +
+									'<article><a href="' + entry['link'] + '" target="_blank">' +
+									'<i class="fa fa-facebook fa-3x"></i>' +
+									'<img src="'+ entry['picture'] +'">' +
+									'<p>"' + entry['message'] + '"</p>' +
+									'<span>' + timeSince(entry['created_at']) + '</span>' +
+									'</a></article>' +
+									'</div>';
+						count = count + 1;
+			        }
+				}
+			}
+			addHTML(feed, button, text);
+	    };
+	    function linkedinFeed(dataWeGotViaJsonp){
+	        var text = '';
+	        var len = 12;
+	        var feed = 'feed-linkedin';
+	        var button = 'stream-btn-linkedin';
+	        var message;
+	        var ellipsis;
+	        var title;
+	        var picture, picURL;
+	        for(var i=0;i<len;i++){
+				entry = dataWeGotViaJsonp[i];
+				if (entry != null) {
+					message = entry['message'];
+					if(message.length > 150) {
+						ellipsis = '...';
+					} else {
+						ellipsis = '';
+					}
+					if(entry['picture']) {
+						if(entry['picture'].substring(0,2) == '//') {
+							picURL = "http:" + entry['picture'];
+						} else {
+							picURL = entry['picture'];
+						}
+						picture = '<img src="'+ picURL +'">';
+					} else {
+						picture = "";
+					}
+					if(message.substring(0,4) == 'http') {
+						title = entry['title'] + " ";
+					} else {
+						title = "";
+					}
+				    text +=     '<div class="linkedinblock wrapper clearfix lazyload block">' +
+								'<article><a href="' + entry['link'] + '" target="_blank">' +
+								'<i class="fa fa-linkedin fa-3x"></i>' +
+								picture +
+								'<p>"' + title + message.substring(0, 150) + ellipsis + '"</p>' +
+								'<span>' + timeSince(entry['created_at']) + '</span>' +
+								'</a></article>' +
+								'</div>';
+				}
+			}
+			addHTML(feed, button, text);
+	    };
+
+		// Process Links //
+		function processTweetLinks(text) {
+			var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+			text = text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+			exp = /(^|\s)#(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.twitter.com/hashtag/$2' target='_blank'>#$2</a>");
+			exp = /(^|\s)@(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.twitter.com/$2' target='_blank'>@$2</a>");
+			return text;
+		}
+		function processInstaLinks(text) {
+			var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+			text = text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+			exp = /(^|)#(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.instagram.com/explore/tags/$2' target='_blank'>#$2</a>");
+			exp = /(^|)@(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.instagram.com/$2' target='_blank'>@$2</a>");
+			return text;
+		}
+		function processFbLinks(text) {
+			var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+			text = text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+			exp = /(^|)#(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.facebook.com/hashtag/$2' target='_blank'>#$2</a>");
+			exp = /(^|)@(\w+)/g;
+			text = text.replace(exp, "$1<a href='https://www.facebook.com/$2' target='_blank'>@$2</a>");
+			return text;
+		}
+
+		var timeSince = function(date) {
+	        if (typeof date !== 'object') {
+	            date = new Date(date.replace(/-/g, '/'));
+	        }
+	        var seconds = Math.floor((new Date() - date) / 1000);
+	        var intervalType;
+	        var interval = Math.floor(seconds / 31536000);
+	        if (interval >= 1) {
+	            intervalType = 'year';
+	        } else {
+	            interval = Math.floor(seconds / 2592000);
+	            if (interval >= 1) {
+	                intervalType = 'month';
+	            } else {
+	                interval = Math.floor(seconds / 86400);
+	                if (interval >= 1) {
+	                    intervalType = 'day';
+	                } else {
+	                    interval = Math.floor(seconds / 3600);
+	                    if (interval >= 1) {
+	                        intervalType = "hour";
+	                    } else {
+	                        interval = Math.floor(seconds / 60);
+	                        if (interval >= 1) {
+	                            intervalType = "minute";
+	                        } else {
+	                            interval = seconds;
+	                            intervalType = "second";
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        if (interval > 1 || interval === 0) {
+	            intervalType += 's';
+	        }
+	        return interval + ' ' + intervalType + ' ago';
+	    };
+	}
+	</script>
+	<script type="text/javascript" src="https://secure.eventbeat.co.uk/jsonp/70349a6887d7fdff6513787c212897a8.json?callback=linkedinFeed" defer></script>
+	<script type="text/javascript" src="https://secure.eventbeat.co.uk/jsonp/cff22e2ff785bcca146a8aae337bec3b.json?callback=facebookFeed" defer></script>
+	<script type="text/javascript" src="https://secure.eventbeat.co.uk/jsonp/70349a6887d7fdff6513787c212897a8.json?callback=twitterFeed" defer></script>
+</section>
+		<footer id="footer" class="clearfix">
+	<div class="container mb40 hidden-sm">
+
+		<figure id="footer-logo" class="hidden-xs">
+			<img src="https://d3jh33bzyw1wep.cloudfront.net/s3/W1siZiIsImNvbXBpbGVkX3RoZW1lX2Fzc2V0cy9jb25leHVzL3BuZy9sb2dvLWZvb3Rlci5wbmciXV0">
+		</figure>
+		<div class="row">
+			<div class="col-md-12 hidden-xs">
+				<nav>
+					<ul class="clearfix navigation_list"><li class=""><a href="/about" target="_self">About Us</a></li><li class=""><a href="/clients" target="_self">Clients</a></li><li class=""><a href="/your-application" target="_self">Apply Now</a></li><li class=""><a href="/contact" target="_self">Contact Us</a></li></ul>
+				</nav>
+			</div>
+			<div class="col-md-12 hidden-xs">
+				<nav id="terms_policy">
+					<ul>
+						<li><a href="/terms-conditions">Terms and Conditions</a></li>
+						<li><a href="/privacy-policy">Cookie Policy</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		<div id="footer_contact" class="row">
+			<div class="col-md-12">
+				<ul id="footer_social_links" class="visible-xs hidden-lg">
+					<li><a class="social-top-links" href="https://www.facebook.com/conexusmedstaff"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i></a></li>
+					<li><a class="social-top-links" href="https://twitter.com/ConexusMedStaff"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i></a></li>
+					<li><a class="social-top-links" href="https://www.linkedin.com/company/826664?trk=tyah&trtrkInfo=clickedVertical%3Acompany%2CclickedEntityId%3A826664%2Cidx%3A3-1-3%2CtarId%3A1476181226180%2Ctas%3ALINK%20Healthcare%20Professionals"><i class="fa fa-fw fa-linkedin-square" aria-hidden="true"></i></a></li>
+				</ul>
+				<article>
+					<p><b>+1 832 406 3040</b> &nbsp; &nbsp;&nbsp;<a href="mailto:info@conexusmedstaff.com" data-cke-saved-href="mailto:info@conexusmedstaff.com">info@conexusmedstaff.com</a></p>
+				</article>
+			</div>
+		</div>
+	</div>
+	<div class="footer-info clearfix">
+		<div class="container">
+		 <div class="pull-left">
+		    <p>All content copyrighted Conexus<span> &copy; All rights reserved</span></p>
+		 </div>
+		 <div class="pull-right">
+		    <p><a id="volcanic" href="https://www.volcanic.co.uk/" target="_blank">Recruitment Website by <span>Volcanic</span></a></p>
+		 </div>
+		</div>
+	</div>
+</footer>
+	</div>
+
+</body>
+</html>
